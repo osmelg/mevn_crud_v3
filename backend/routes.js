@@ -95,7 +95,7 @@ var router = express.Router();
                     }
                 })
         })            
-    // GET - (obtener comentarios)   
+    // GET - (obtener comentarios)
         router.get('/dashboard',checkAuth,(req,res)=>{
             Comentarios.find({})
                 .exec(function(error,comentarios){
