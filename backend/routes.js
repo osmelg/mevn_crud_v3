@@ -113,26 +113,31 @@ var router = express.Router();
 
                     
             })
-        // PRUEBA DE IMAGEN
-            router.post('/test',upload.single('imagen'),(req, res) => {
-                const test = new Test();
-                    // test.imagen = req.body.file;
-                    test.imagen = req.file.path;
-                    test.save(function (error) {
-                        if (error) {
-                            res.json({rs:'testError'});
-                        } else {
-                            res.status(200).json({rs: 'testSuccess'});
-                        }
-                    })
-            }) 
 // CRUD
     // Home
         router.get('/',(req,res) =>{
             res.send('Bienvenido al mevn_crud_v3');
         })
+<<<<<<< HEAD
     // GET - (obtener comentarios)   
         router.get('/dashboard',(req,res)=>{
+=======
+    // POST (crear un comentario)
+        router.post('/dashboard/crearcomentario',checkAuth,(req,res)=>{
+            const comentario = new Comentarios();
+                  comentario.titulo = req.body.titulo;
+                  comentario.comentario = req.body.comentario;
+                  comentario.creadoEn = new Date();
+                  comentario.save(function(error){
+                    if (error){res.json({rs:'errorCrearComentario'});
+                    }else{
+                        res.json({rs:'comentarioCreado'});
+                    }
+                })
+        })            
+    // GET - (obtener comentarios)
+        router.get('/dashboard',checkAuth,(req,res)=>{
+>>>>>>> master
             Comentarios.find({})
                 .populate('refUsuario','nombre') 
                 .exec(function(error,comentarios){
