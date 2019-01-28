@@ -33,7 +33,6 @@ export default {
         })
         .catch(error =>{
             if(error.response.data.rs === 'tokenExpired'){
-            // alert('tokenExpired');
             this.$router.push('/login');
             localStorage.removeItem('token');
             }else if (error.response.data.rs === 'getComentariosError'){

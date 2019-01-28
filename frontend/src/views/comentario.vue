@@ -1,14 +1,4 @@
 <template>
-  <!-- <div>
-    <router-link to='/dashboard'>Volver</router-link>
-      <p>{{comentarioError}}</p><hr>
-      <form v-on:submit.prevent="putComentario">
-        <input type="text" v-model="comentario.titulo"><br>
-        <input type="text" v-model="comentario.comentario"><br>
-        <a href="" v-on:click.prevent="deletecomentario(comentario._id)">Eliminar</a>
-        <button>Actualizar</button>
-      </form>
-  </div> -->
     <div class="grid">
         <div class="headerGrid">
             <div class="headerContainer">
