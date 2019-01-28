@@ -1,4 +1,26 @@
 var express = require('express');
+const checkAuth = require('./middlewares/checkAuth');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Usuarios = require('./models/Usuarios.model');
+const Comentarios = require('./models/Comentarios.model');
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './upload/')
+        },
+        filename: function (req, file, cb) {
+        cb(null,file.originalname);
+        }
+    })
+const fileFilter = (req,file,cb)=>{
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg'){
+        cb(null,true);
+    }else{
+        cb(null,false);
+    }
+} 
+const upload = multer({storage:storage,limits:{fileSize:1024*1024*5},fileFilter:fileFilter});
 var router = express.Router();
 // Rutas
     // AUTENTICACION 
@@ -41,7 +63,7 @@ var router = express.Router();
                 })
             })
         // POST (SIGN UP)
-            router.post('/signup', (req, res) => {
+            router.post('/signup',upload.single('fotoPerfil'), (req, res) => {
                 Usuarios.find({ email: req.body.email })
                     .exec()
                     .then(usuario => {
@@ -56,13 +78,13 @@ var router = express.Router();
                                 } if(passwordCifrado) {
                                     const usuario = new Usuarios();
                                     usuario.nombre = req.body.nombre;
+                                    usuario.fotoPerfil = req.file.path;
                                     usuario.email = req.body.email;
                                     usuario.password = passwordCifrado;
-                                    usuario.creadoEn = new Date();
                                     usuario.confirmacionCuenta = false;
                                     usuario.save(function (error) {
                                         if (error) {
-                                            res.json({ error: 'error' });
+                                            res.json({ rs: 'error' });
                                         } else { // nombre(front):usuario.nombre(back)
                                             jwt.sign({nombre:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{
                                                 res.json({
@@ -76,28 +98,43 @@ var router = express.Router();
                             })
                         }
                     })
-            })             
+            })
+        // GET - (obtener usuarios)   
+            router.get('/usuarios',(req,res)=>{
+                Usuarios.find({})
+                    // .populate()
+                    .exec(function(error,usuarios){
+                        if(error){
+                            res.json({rs:'getusuariosError'})
+                        }else{
+                            res.json(usuarios);
+                        }
+                    })
+
+                    
+            })
+        // PRUEBA DE IMAGEN
+            router.post('/test',upload.single('imagen'),(req, res) => {
+                const test = new Test();
+                    // test.imagen = req.body.file;
+                    test.imagen = req.file.path;
+                    test.save(function (error) {
+                        if (error) {
+                            res.json({rs:'testError'});
+                        } else {
+                            res.status(200).json({rs: 'testSuccess'});
+                        }
+                    })
+            }) 
 // CRUD
     // Home
         router.get('/',(req,res) =>{
-            res.send('Bienvenido al Back End de el Mevn Crud Completo + Bcrypt + JWT');
+            res.send('Bienvenido al mevn_crud_v3');
         })
-    // POST (crear un comentario)
-        router.post('/dashboard/crearcomentario',checkAuth,(req,res)=>{
-            const comentario = new Comentarios();
-                  comentario.titulo = req.body.titulo;
-                  comentario.comentario = req.body.comentario;
-                  comentario.creadoEn = new Date();
-                  comentario.save(function(error){
-                    if (error){res.json({rs:'errorCrearComentario'});
-                    }else{
-                        res.json({rs:'comentarioCreado'});
-                    }
-                })
-        })            
     // GET - (obtener comentarios)   
-        router.get('/dashboard',checkAuth,(req,res)=>{
+        router.get('/dashboard',(req,res)=>{
             Comentarios.find({})
+                .populate('refUsuario','nombre') 
                 .exec(function(error,comentarios){
                     if(error){
                         res.json({rs:'getComentariosError'})
@@ -107,7 +144,7 @@ var router = express.Router();
                 })
         })
     // GET (Obtener un comentario)
-        router.get('/dashboard/comentario/:id',checkAuth,(req,res)=>{
+        router.get('/dashboard/comentario/:id',(req,res)=>{
             Comentarios.findOne({
                 _id:req.params.id
             })
@@ -119,9 +156,24 @@ var router = express.Router();
                     res.json(comentario);
                 }
             })
+        })   
+    // POST (crear un comentario)
+        router.post('/dashboard/crearcomentario',(req,res)=>{
+            console.log(req.file);
+            const comentario = new Comentarios();
+                  comentario.titulo = req.body.titulo;
+                  comentario.comentario = req.body.comentario;
+                  comentario.refUsuario = req.body.id;
+                  comentario.save(function(error){
+                    if (error){
+                        res.json({rs:'errorCrearComentario'});
+                    }else{
+                        res.json({rs:'comentarioCreado'});
+                    }
+                })
         })            
     // PUT - (Actualizar comnetario)
-        router.put('/dashboard/comentario/:id',checkAuth,(req,res)=>{
+        router.put('/dashboard/comentario/:id',(req,res)=>{
             Comentarios.findOneAndUpdate({
                 _id:req.params.id
             },
@@ -134,7 +186,7 @@ var router = express.Router();
             })
         })
     // DELETE 
-        router.delete('/dashboard/comentario/:id',checkAuth,(req,res)=>{
+        router.delete('/dashboard/comentario/:id',(req,res)=>{
             Comentarios.findOneAndDelete({
                 _id:req.params.id
             },(error,comentarioEliminado)=>{

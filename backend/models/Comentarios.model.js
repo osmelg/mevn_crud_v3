@@ -3,6 +3,6 @@ const Schema = mongoose.Schema;
 const BlogEsquema = new Schema({
     titulo: String,
     comentario: String,
-    creadoEn: String
-},{versionKey:false})
+    refUsuario:[{type:Schema.Types.ObjectId, ref:'Usuarios'}]
+},{timestamps:true,versionKey:false})
 module.exports = mongoose.model('Comentarios',BlogEsquema);

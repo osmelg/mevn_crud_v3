@@ -5,6 +5,7 @@ import crearcomentario from './views/crearcomentario.vue'
 import comentario from './views/comentario.vue'
 import login from './views/login.vue'
 import signup from './views/signup.vue'
+import test from './views/test.vue'
 
 Vue.use(Router)
 
@@ -16,7 +17,8 @@ let router = new Router({
     { path: '/dashboard/crearcomentario',name: 'crearcomentario',component: crearcomentario,meta:{requiresAuth:true}},
     { path: '/dashboard/comentario/:id',name: 'comentario',component: comentario,meta:{requiresAuth:true}},
     { path: '/login',name: 'login',component: login},
-    { path: '/signup',name: 'signup',component: signup}
+    { path: '/signup',name: 'signup',component: signup},
+    { path: '/test',name: 'test',component: test}
   ]
 })
 router.beforeEach((to, from, next) => {

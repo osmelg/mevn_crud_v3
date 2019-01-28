@@ -2,13 +2,14 @@
     <div>
         <h1>{{titulo}}</h1>
         <h1>{{nombreUsuario}}</h1>
-        <form v-on:submit.prevent="crearUsuario">
+        <form v-on:submit.prevent="crearUsuario" enctype="multipart/form-data">
             <input type="text" v-model="nombre" placeholder="nombre" v-validate="'required'" name="nombre"><br>
             <span>{{ errors.first('nombre') }}</span><br>
             <input type="text" v-model="email" placeholder="email" v-validate="'required|email'" name="email"><br>
             <span>{{ errors.first('email') }}</span><br>
             <input type="text" v-model="password" placeholder="password" v-validate="'required|min_value:3'" name="password"><br>
             <span>{{ errors.first('password') }}</span><br>
+            <input type="file" @change='onFileSelected'><br>
             <button type="submit">Crear Usuario</button>
         </form>
     </div>
@@ -24,20 +25,31 @@ export default {
         return{
             titulo:'Sign Up',
             nombre:'',
+            fotoPerfil: null,
             email:'', 
             password:'',
             nombreUsuario:''
         }
     },
     methods:{
-        crearUsuario(){
+        onFileSelected(event){
+            this.fotoPerfil = event.target.files[0];
+        },
+        crearUsuario(event){
             this.$validator.validateAll().then(res=>{
                 if(res) {
+                    console.log(this.fotoPerfil);
+                    const data = new FormData();
+                    data.append('nombre',this.nombre);
+                    data.append('fotoPerfil',this.fotoPerfil);
+                    data.append('email',this.email);
+                    data.append('password',this.password);
                     axios
-                    .post('http://localhost:3000/signup',{
-                        nombre:this.nombre,
-                        email:this.email,
-                        password:this.password,
+                    .post('http://localhost:3000/signup',data,
+                    {
+                        onUploadProgress:uploadEvent =>{
+                            console.log('progress: ' +  Math.round(uploadEvent.loaded / uploadEvent.total * 100) + '%');
+                        }
                     })
                     .then(response =>{
                         if(response.data.rs === 'usuarioCreado'){
@@ -66,9 +78,9 @@ export default {
                             alert(error);
                         }
                     })                   
-                    } else {
-                        alert('Verifica los datos');
-                    }
+                } else {
+                    alert('Verifica los datos');
+                }
             })
         }
     }

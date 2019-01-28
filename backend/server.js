@@ -1,12 +1,7 @@
 // Llamado de modulos
     const bodyParser = require('body-parser');
     const cors = require('cors');
-    const bcrypt = require('bcryptjs');
-    const jwt = require('jsonwebtoken');
-    const checkAuth = require('./middlewares/checkAuth');
     const mongoose = require('mongoose');
-    const Usuarios = require('./models/Usuarios.model');
-    const Comentarios = require('./models/Comentarios.model');
     const routes = require('./routes.js');
     const express = require('express');
     
@@ -23,12 +18,11 @@
     app.use('/', routes);
     app.use('/login', routes);
     app.use('/signup', routes);
-    app.use('/dashboard/crearcomentario', routes);
     app.use('/dashboard', routes);
+    app.use('/dashboard/crearcomentario', routes);
     app.use('/dashboard/comentario/:id', routes);
-    // Comprobar si funciona la misma ruta para readone,put y delete
 // Mongoose
-    mongoose.connect('mongodb://localhost/mevn_crud_login_bcrypt_jwt',{useNewUrlParser:true},(error)=>{
+    mongoose.connect('mongodb://localhost/mevn_crud_v3',{useNewUrlParser:true},(error)=>{
         if(error){
             throw error;
         }else{

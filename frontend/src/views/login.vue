@@ -33,15 +33,14 @@ export default {
     data(){
         return{
             email:'',
-            password:'',
+            password:''
         }
     },
     methods:{
         features(){
-            console.log('hola');
-            this.Swal.fire(
+            this.$swal.fire(
                 'Features',
-                'Html - Css - Vuejs - Veevalidate - Sweetalert2 - NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens',
+                'Front End: Html - Css - Vuejs - Veevalidate - Sweetalert2 || Back End: NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens - multer',
                 'info'
                 )
         },
@@ -134,6 +133,7 @@ export default {
 }
 </script>
 <style >
+.aa{height: 100px; width: 100px;}
 /* General */
     *                                           {margin: 0; padding: 0; font-size: 10px;}
     @font-face                                  {font-family: one; src: url('../assets/fonts/Oxygen-Bold.ttf');}

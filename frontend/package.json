@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "install": "^0.12.2",
     "jsonwebtoken": "^8.4.0",
     "vee-validate": "^2.1.5",
     "vue": "^2.5.21",
