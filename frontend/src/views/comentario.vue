@@ -10,7 +10,7 @@
                         <p class="headerNavCenterTitle">Edit Post</p>
                     </div>
                     <div class="headerNavRight">
-                        <cerrarSesion></cerrarSesion>
+                        <cerrarsesion></cerrarsesion>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,9 @@
 /* eslint-disable */
 import axios from "axios";
 import router from "../router";
+import cerrarsesion from '../components/cerrarsesion.vue';
 export default {
+  components:{'cerrarsesion':cerrarsesion},
   data(){
     return{
       comentario:{},
@@ -48,7 +50,11 @@ export default {
   methods:{
     getcomentario(){
       axios
-      .get('http://localhost:3000/dashboard/comentario/'+this.$route.params.id)
+      .get('http://localhost:3000/dashboard/comentario/'+this.$route.params.id,{
+              headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+              },
+          }) 
       .then(response =>{
         this.comentario = response.data;
       })
@@ -60,7 +66,12 @@ export default {
     },
     putComentario(){
       axios
-      .put('http://localhost:3000/dashboard/comentario/'+this.$route.params.id,this.comentario)
+      .put('http://localhost:3000/dashboard/comentario/'+this.$route.params.id,this.comentario,
+        {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },                
+        })
       .then(response=>{
         if(response.data.rs === 'comentarioActualizado'){
           this.$router.push('/dashboard');
@@ -74,7 +85,12 @@ export default {
     },
     deletecomentario(id) {
       axios
-        .delete("http://localhost:3000/dashboard/comentario/"+id)
+        .delete("http://localhost:3000/dashboard/comentario/"+id,
+          {
+              headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+              },                
+          })
         .then(response => {
           if (response.data.rs === "comentarioEliminado") {
             this.$router.push('/dashboard');
@@ -86,7 +102,6 @@ export default {
           }else if(error.response.data.rs === 'tokenExpired'){
             this.$router.push('/login');
             localStorage.removeItem('token');
-            // alert('tokenExpired');            
           }
         })
     }

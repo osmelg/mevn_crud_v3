@@ -12,7 +12,7 @@
                 <p class="bodyContainerTitle">Log In</p>
                 <input type="text" class="bodyContainerInput" v-model="email" placeholder="email" v-validate="'required|email'" name="email"><br>
                 <span class="errors">{{ errors.first('email') }}</span><br>
-                <input type="text" class="bodyContainerInput" v-model="password" placeholder="password" v-validate="'required|min_value:3'" name="password"><br>
+                <input type="password" class="bodyContainerInput" v-model="password" placeholder="password" v-validate="'required|min_value:3'" name="password"><br>
                 <span class="errors">{{ errors.first('password') }}</span><br>
                 <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
             </form>
@@ -20,7 +20,7 @@
         </div>
         <div class="footGrid">
             <div class="footContainer">
-            <a class="footContainerTitle" href="www.osmel.tk">www.osmel.tk</a>
+            <a class="footContainerTitle" href="https://ogportfolio.herokuapp.com/">www.osmel.tk</a>
             </div>
         </div>  
     </div>
@@ -33,14 +33,14 @@ export default {
     data(){
         return{
             email:'',
-            password:''
+            password:'',
         }
     },
     methods:{
         features(){
             this.$swal.fire(
                 'Features',
-                'Front End: Html - Css - Vuejs - Veevalidate - Sweetalert2 || Back End: NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens - multer',
+                'Html - Css - Vuejs - Veevalidate - Sweetalert2 - NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens',
                 'info'
                 )
         },
@@ -133,7 +133,6 @@ export default {
 }
 </script>
 <style >
-.aa{height: 100px; width: 100px;}
 /* General */
     *                                           {margin: 0; padding: 0; font-size: 10px;}
     @font-face                                  {font-family: one; src: url('../assets/fonts/Oxygen-Bold.ttf');}
@@ -145,7 +144,7 @@ export default {
       .headerGrid                               {height: 15vh; display: grid; grid-area: headerGrid;}
         .headerContainer                        {height: 100%; display: grid; justify-items: center; align-items: center;}
           .headerContainerTitle                 {color: #ffffff; font-size: 4.5em; font-family: one;}
-          .headerContainerButton                {padding: 0.5em; font-family: helvetica; font-size: 1.5em; border: none; cursor: pointer;}
+          .headerContainerButton                {background: #6f81ad; color: #fff; padding: 0.5em; font-family: helvetica; font-size: 1.5em; border: none; cursor: pointer;}
       .bodyGrid                                 {height: 80vh; display: grid; grid-area: bodyGrid;}
         .bodyContainer                          {height: 100%; text-align: center; display: flex; justify-content: center; align-items: center; flex-direction: column;}
           .bodyContainerTitle                   {color: #fff; font-size: 3.6em; font-family: two;}

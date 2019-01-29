@@ -46,9 +46,15 @@ export default {
     methods:{
         postComentario(){
             axios
-            .post('http://localhost:3000/dashboard/crearcomentario',{
+            .post('http://localhost:3000/dashboard/crearcomentario',
+            {
                 titulo:this.titulo,
                 comentario:this.comentario
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },                
             })
             .then(response =>{
                 if(response.data.rs === 'comentarioCreado'){
@@ -58,10 +64,13 @@ export default {
             .catch(error=>{
                 if(error.response.data.rs === 'errorCrearComentario'){
                     alert('errorCrearComentario');
-                }else if(error.response.data.rs === 'tokenExpired'){
+                }
+                else if(error.response.data.rs === 'tokenExpired'){
+                    alert('tokenExpired');
                     this.$router.push('/login');
                     localStorage.removeItem('token');
-                    // alert('tokenExpired');            
+                }else{
+                    alert(error);
                 }
             })
         }
