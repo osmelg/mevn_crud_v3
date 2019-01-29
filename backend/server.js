@@ -11,7 +11,7 @@
     app.listen('3000',() =>{
         console.log('servidor iniciado');
     })
-// Llamando a los middlewares
+// Middlewares
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
     app.use(cors());
