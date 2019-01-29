@@ -8,15 +8,17 @@
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">
-            <form v-on:submit.prevent="postUsuario">
-                <p class="bodyContainerTitle">Log In</p>
-                <input type="text" class="bodyContainerInput" v-model="email" placeholder="email" v-validate="'required|email'" name="email"><br>
-                <span class="errors">{{ errors.first('email') }}</span><br>
-                <input type="password" class="bodyContainerInput" v-model="password" placeholder="password" v-validate="'required|min_value:3'" name="password"><br>
-                <span class="errors">{{ errors.first('password') }}</span><br>
-                <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
-            </form>
+                <form v-on:submit.prevent="postUsuario">
+                    <p class="bodyContainerTitle">Log In</p>
+                    <input type="text" class="bodyContainerInput" v-model="email" placeholder="email" v-validate="'required|email'" name="email"><br>
+                    <span class="errors">{{ errors.first('email') }}</span><br>
+                    <input type="password" class="bodyContainerInput" v-model="password" placeholder="password" v-validate="'required|min_value:3'" name="password"><br>
+                    <span class="errors">{{ errors.first('password') }}</span><br>
+                    <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
+                </form>
             </div>
+            <a href=""></a>
+            <router-link to='/forgot'>forgot pw?</router-link>
         </div>
         <div class="footGrid">
             <div class="footContainer">

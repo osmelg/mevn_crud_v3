@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *                            {margin: 0; padding: 0;}
+        .grid                           {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
+            .headGrid                       {height: 40vh; background: rgb(255, 0, 0); display: grid; grid-area: headGrid;}
+                .headContainer                  {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+            .bodyGrid                       {height: 55vh; background: rgba(0, 255, 255, 0.432); display: grid; grid-area: bodyGrid;}
+                .bodyContainer                  {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+            .footGrid                       {height: 5vh; background: rgba(0, 0, 255, 0.363); display: grid; grid-area: footGrid;}
+                .footContainer                  {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="headGrid">
+            <div class="headContainer">
+                <p>Forgot your password?</p>
+                <p>Go back</p>                
+            </div>
+        </div>
+        <div class="bodyGrid">
+            <div class="bodyContainer">
+                <p>Type your email</p>
+                <input type="text" placeholder="email">
+                <button>Send</button>
+            </div>
+        </div>
+        <div class="footGrid">
+            <div class="footContainer">
+                <a href="https://ogportfolio.herokuapp.com/">www.osmel.tk</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
