@@ -4,7 +4,6 @@
     const mongoose = require('mongoose');
     const routes = require('./routes.js');
     const express = require('express');
-    
 // Inicializamos express
     var app = express();
 // Levantando el servidor

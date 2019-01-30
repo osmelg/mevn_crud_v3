@@ -16,6 +16,7 @@
                     <span class="errors">{{ errors.first('email') }}</span><br>
                     <input type="password" v-model="password" class="bodyContainerInput" placeholder="password" v-validate="'required|min_value:3'" name="password"><br>
                     <span class="errors">{{ errors.first('password') }}</span><br>
+                    <input type="file" @change="onFileSelected"><br>
                     <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
                 </form>
             </div>
@@ -39,7 +40,8 @@ export default {
             nombre:'',
             email:'', 
             password:'',
-            nombreUsuario:''
+            nombreUsuario:'',
+            fotoPerfil:null
         }
     },
     methods:{
@@ -50,59 +52,70 @@ export default {
                 'info'
                 )
         },
+        onFileSelected(event){
+            this.fotoPerfil = event.target.files[0];
+        },
         crearUsuario(){
             this.$validator.validateAll().then(res=>{
                 if(res) {
-                    axios
-                    .post('http://localhost:3000/signup',{
-                        nombre:this.nombre,
-                        email:this.email,
-                        password:this.password,
+                    const data = new FormData();
+                    data.append('nombre',this.nombre);
+                    data.append('fotoPerfil',this.fotoPerfil);
+                    data.append('email',this.email);
+                    data.append('password',this.password);
+                    axios.post('http://localhost:3000/signup',data,
+                    {
+                        onUploadProgress:uploadEvent =>{
+                            console.log('progress: ' +  Math.round(uploadEvent.loaded / uploadEvent.total * 100) + '%');
+                        }
                     })
                     .then(response =>{
                         if(response.data.rs === 'usuarioCreado'){
-                            const toast = this.$swal.mixin({
-                                toast: true,
-                                position: 'top-end',
-                                showConfirmButton: false,
-                                timer: 3000
-                                });
-                                toast({
-                                type: 'success',
-                                title: 'Usuario Creado'
-                                })
+                            alert('usuarioCreado')
+                            // const toast = this.$swal.mixin({
+                            //     toast: true,
+                            //     position: 'top-end',
+                            //     showConfirmButton: false,
+                            //     timer: 3000
+                            //     });
+                            //     toast({
+                            //     type: 'success',
+                            //     title: 'Usuario Creado'
+                            //     })
                             localStorage.setItem('token',response.data.token);
                             this.$router.push('/dashboard');
                         }
                     })
                     .catch(error=>{
                         if(error.response.data.rs === 'emailExiste'){
-                            const toast = this.$swal.mixin({
-                                toast: true,
-                                position: 'top',
-                                showConfirmButton: false,
-                                timer: 3000
-                                });
-                                toast({
-                                type: 'error',
-                                title: 'Email existe, utilice otro'
-                                })
+                            alert('emailExiste')
+                            // const toast = this.$swal.mixin({
+                            //     toast: true,
+                            //     position: 'top',
+                            //     showConfirmButton: false,
+                            //     timer: 3000
+                            //     });
+                            //     toast({
+                            //     type: 'error',
+                            //     title: 'Email existe, utilice otro'
+                            //     })
                         }else if (error.response.data.rs === 'errorEncriptacion'){
-                            const toast = this.$swal.mixin({
-                                toast: true,
-                                position: 'top',
-                                showConfirmButton: false,
-                                timer: 3000
-                                });
-                                toast({
-                                type: 'error',
-                                title: 'Error al encriptar Password'
-                                })
+                            alert('errorEncriptacion')
+                            // const toast = this.$swal.mixin({
+                            //     toast: true,
+                            //     position: 'top',
+                            //     showConfirmButton: false,
+                            //     timer: 3000
+                            //     });
+                            //     toast({
+                            //     type: 'error',
+                            //     title: 'Error al encriptar Password'
+                            //     })
                         }else{
                             alert(error);
                         }
                     })                   
-                    } else {
+                    }else{
                         const toast = this.$swal.mixin({
                             toast: true,
                             position: 'top',

@@ -37,14 +37,13 @@ export default {
   components:{'cerrarSesion':cerrarSesion,'comentarios':comentarios},
   data(){
     return{
-      titulo:'CRUD - M(mongodb) e(express) v(vuejs) n(nodejs)',
       nombreUsuario:''
     }
   },
   created(){
     const token = localStorage.getItem('token');
     const descifrado = jwt.decode(token);
-    this.nombreUsuario = descifrado.nombre;
+    this.nombreUsuario = descifrado.fotoPerfil;
   }
 }
 </script>

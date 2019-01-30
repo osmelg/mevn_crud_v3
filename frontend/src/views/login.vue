@@ -16,9 +16,8 @@
                     <span class="errors">{{ errors.first('password') }}</span><br>
                     <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
                 </form>
+                    <router-link to='/forgot'>forgot pw?</router-link>
             </div>
-            <a href=""></a>
-            <router-link to='/forgot'>forgot pw?</router-link>
         </div>
         <div class="footGrid">
             <div class="footContainer">
@@ -105,16 +104,17 @@ export default {
                             title: 'Password Incorrect'
                             })
                         }else{
-                            const toast = this.$swal.mixin({
-                            toast: true,
-                            position: 'top',
-                            showConfirmButton: false,
-                            timer: 3000
-                            });
-                            toast({
-                            type: 'error',
-                            title: `${error}`
-                            })
+                            alert(error);
+                            // const toast = this.$swal.mixin({
+                            // toast: true,
+                            // position: 'top',
+                            // showConfirmButton: false,
+                            // timer: 3000
+                            // });
+                            // toast({
+                            // type: 'error',
+                            // title: `${error}`
+                            // })
                         }
                     })                    
                 } else {
