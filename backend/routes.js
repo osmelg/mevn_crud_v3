@@ -139,7 +139,7 @@ const multer = require('multer');
                             `
                                 <h1>Click the link below to reset your password</h1>
                                 <h6>This url will expired in 1 hour</h6>
-                                <a href='localhost:8080/${token}'>Reset Password</a>
+                                <a href='localhost:8080/reset/${token}'>Reset Password</a>
                             `
                         };
                         transporter.sendMail(mailOptions, function (error, info) {
@@ -163,7 +163,8 @@ const multer = require('multer');
         })
     // RESET PASSWORD    
         app.get('reset/:token',(req,res)=>{
-            req.params.token
+            let token = req.params.token;
+            console.log(token);
         }) 
 // CRUD
     // Home
