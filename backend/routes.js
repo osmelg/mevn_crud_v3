@@ -100,7 +100,71 @@ const multer = require('multer');
                         })
                     }
                 })
-        })             
+        })        
+    // FORGOT PASSWORD
+        app.post('/forgot', (req, res) => {
+            Usuarios.find({ email: req.body.email })
+                .exec()
+                .then(usuario => {
+                    if (usuario.length >= 1) {
+                        //token start
+                        const token = jwt.sign(
+                            { // se puede pasar el id por aqui?me parece inseguro
+                                email: usuario[0].email
+                            },
+                            process.env.JWT_KEY,
+                            {
+                                expiresIn: "1h"
+                            }
+                        );
+                        // return res.status(200).json({ verificar este return
+                        res.status(200).json({
+                            token: token
+                        });
+                        //token end                            
+                        //nodemailer top
+                        var transporter = nodemailer.createTransport({
+                            service: process.env.SERVICE,
+                            auth: {
+                                user: process.env.USER,
+                                pass: process.env.PASSWORD
+                            }
+                        });
+                        var mailOptions = {
+                            from: process.env.USER,
+                            to: req.body.emailTo,
+                            // subject: req.body.emailSubjet,
+                            // text: req.body.emailText,
+                            html: 
+                            `
+                                <h1>Click the link below to reset your password</h1>
+                                <h6>This url will expired in 1 hour</h6>
+                                <a href='localhost:8080/${token}'>Reset Password</a>
+                            `
+                        };
+                        transporter.sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                error.json({rs:'enviarEmailError'});
+                            } else {
+                                res.json({rs:'emailEnviado'});
+                            }
+                        });
+                        // res.json({rs:'enviarEmailCorrecto'}); revisar este error, es necesario?
+                        //nodemailer end                         
+                    } else {
+                        return res.status(200).json({
+                            rs: 'emailNoExiste'
+                        })
+                    }
+                })
+                .catch(error =>{
+                    console.log(error);
+                })
+        })
+    // RESET PASSWORD    
+        app.get('reset/:token',(req,res)=>{
+            req.params.token
+        }) 
 // CRUD
     // Home
         app.get('/',(req,res) =>{
