@@ -1,4 +1,5 @@
 const checkAuth = require('./middlewares/checkAuth');
+const checkForgot = require('./middlewares/checkForgot');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -105,27 +106,49 @@ const express = require('express');
             })        
         // FORGOT PASSWORD
             router.post('/forgot', (req, res) => {
-                Usuarios.find({ email: req.body.emailTo })
+                Usuarios.find({email:req.body.emailTo})
                     .exec()
                     .then(usuario => {
                         if (usuario.length >= 1) {
                             res.status(200).json({rs:'emailConseguido'})
                             //token start
-                                // const token = jwt.sign(
-                                //     { // se puede pasar el id por aqui?me parece inseguro
-                                //         email: usuario[0].email
-                                //     },
-                                //     process.env.JWT_KEY,
-                                //     {
-                                //         expiresIn: "1h"
-                                //     }
-                                // );
-                                // // return res.status(200).json({ verificar este return
-                                // res.status(200).json({
-                                //     rs:'tokenCreado',
-                                //     token: token
-                                // });
+                                const token = jwt.sign(
+                                    { // se puede pasar el id por aqui?me parece inseguro
+                                        email: usuario[0].email
+                                    },
+                                    process.env.JWT_KEY,
+                                    {
+                                        expiresIn: "1h"
+                                    }
+                                );
+                                res.status(200).json({rs:'tokenCreado',token:token});
                             //token end 
+                            //nodemailer top
+                                var transporter = nodemailer.createTransport({
+                                    service: process.env.SERVICE,
+                                    auth:{user: process.env.USER,pass: process.env.PASSWORD}
+                                });
+                                var mailOptions = {
+                                    from: process.env.USER,
+                                    to: req.body.emailTo,
+                                    // subject: req.body.emailSubjet, sino envia el html, habra que pasar subject o text por el html?
+                                    // text: req.body.emailText,
+                                    html: 
+                                    `
+                                        <h1>Click the link below to reset your password</h1>
+                                        <h6>This url will expired in 1 hour</h6>
+                                        <a href='localhost:8080/reset/${token}'>Reset Password</a>
+                                    `
+                                };
+                                transporter.sendMail(mailOptions, function (error, info) {
+                                    if (error){
+                                        console.log(error);
+                                    }else {
+                                        res.json({rs:'emailEnviado'});
+                                    }
+                                });
+                                // res.json({rs:'enviarEmailCorrecto'}); revisar este error, es necesario?
+                            //nodemailer end                             
                         } else {
                             res.status(200).json({rs: 'emailNoExiste'})
                         }
@@ -135,9 +158,12 @@ const express = require('express');
                     })
             })
         // RESET PASSWORD
-            router.get('reset/:token',(req,res)=>{
-                let token = req.params.token;
-                console.log(token);
+            router.get('reset/:token',checkForgot,(req,res)=>{
+                // Ideas
+                    // 1. en el momento del /reset, el email debe estar oculto para que sea ese registro el que se va a buscar y luego actualizar
+                    // el problema de estar oculto es que es modificable tambien
+                // obtener id del email asociado?
+                const newPassword = req.body.password;
             }) 
     // CRUD
         // Home
