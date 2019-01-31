@@ -105,58 +105,29 @@ const express = require('express');
             })        
         // FORGOT PASSWORD
             router.post('/forgot', (req, res) => {
-                Usuarios.find({ email: req.body.email })
+                Usuarios.find({ email: req.body.emailTo })
                     .exec()
                     .then(usuario => {
                         if (usuario.length >= 1) {
+                            res.status(200).json({rs:'emailConseguido'})
                             //token start
-                            const token = jwt.sign(
-                                { // se puede pasar el id por aqui?me parece inseguro
-                                    email: usuario[0].email
-                                },
-                                process.env.JWT_KEY,
-                                {
-                                    expiresIn: "1h"
-                                }
-                            );
-                            // return res.status(200).json({ verificar este return
-                            res.status(200).json({
-                                token: token
-                            });
-                            //token end                            
-                            //nodemailer top
-                            var transporter = nodemailer.createTransport({
-                                service: process.env.SERVICE,
-                                auth: {
-                                    user: process.env.USER,
-                                    pass: process.env.PASSWORD
-                                }
-                            });
-                            var mailOptions = {
-                                from: process.env.USER,
-                                to: req.body.emailTo,
-                                // subject: req.body.emailSubjet,
-                                // text: req.body.emailText,
-                                html: 
-                                `
-                                    <h1>Click the link below to reset your password</h1>
-                                    <h6>This url will expired in 1 hour</h6>
-                                    <a href='localhost:8080/reset/${token}'>Reset Password</a>
-                                `
-                            };
-                            transporter.sendMail(mailOptions, function (error, info) {
-                                if (error) {
-                                    error.json({rs:'enviarEmailError'});
-                                } else {
-                                    res.json({rs:'emailEnviado'});
-                                }
-                            });
-                            // res.json({rs:'enviarEmailCorrecto'}); revisar este error, es necesario?
-                            //nodemailer end                         
+                                // const token = jwt.sign(
+                                //     { // se puede pasar el id por aqui?me parece inseguro
+                                //         email: usuario[0].email
+                                //     },
+                                //     process.env.JWT_KEY,
+                                //     {
+                                //         expiresIn: "1h"
+                                //     }
+                                // );
+                                // // return res.status(200).json({ verificar este return
+                                // res.status(200).json({
+                                //     rs:'tokenCreado',
+                                //     token: token
+                                // });
+                            //token end 
                         } else {
-                            return res.status(200).json({
-                                rs: 'emailNoExiste'
-                            })
+                            res.status(200).json({rs: 'emailNoExiste'})
                         }
                     })
                     .catch(error =>{

@@ -10,7 +10,7 @@
             <div class="bodyContainer">
                 <p>Type your email</p>
                 <form @submit.prevent='resetEmail'>
-                    <input type="text" v-model="email" placeholder="email">
+                    <input type="text" v-model="emailTo" placeholder="email">
                     <button>Send</button>                    
                 </form>
             </div>
@@ -28,55 +28,24 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            email:''
+            emailTo:''
         }
     },
     methods:{
         resetEmail(){
             axios.post('http://localhost:3000/forgot',
                 {
-                    email:this.email,
+                    emailTo:this.emailTo,
                 })
                 .then(response =>{
-                    if(response.data.rs === 'emailEnviado'){
-                        const toast = this.$swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000
-                            });
-                            toast({
-                            type: 'success',
-                            title: 'Check your email account'
-                            })
-                        localStorage.setItem('token',response.data.token);
-                        this.$router.push('/dashboard');
+                    if(response.data.rs === 'emailConseguido'){
+                        alert('emailConseguido')
+                    }else if (response.data.rs === 'emailNoExiste'){
+                        alert('emailNoExiste')
                     }
                 })
                 .catch(error=>{
-                    if(error.response.data.rs === 'enviarEmailError'){
-                        const toast = this.$swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000
-                        });
-                        toast({
-                        type: 'error',
-                        title: 'Error reseting your password'
-                        })
-                    }else if (error.response.data.rs === 'emailNoExiste'){
-                        const toast = this.$swal.mixin({
-                        toast: true,
-                        position: 'top',
-                        showConfirmButton: false,
-                        timer: 3000
-                        });
-                        toast({
-                        type: 'error',
-                        title: 'The email doesnt exists'
-                        })
-                    }
+                    alert(error);
                 })  
         }
     }
