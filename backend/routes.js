@@ -90,8 +90,8 @@ const express = require('express');
                                     usuario.save(function (error) {
                                         if (error) {
                                             res.json({ error: 'error' });
-                                        } else { 
-                                            jwt.sign({nombre:usuario.fotoPerfil},'secret',{expiresIn:'300s'},(err,token)=>{
+                                        } else {
+                                            jwt.sign({nombre:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{
                                                 res.json({
                                                     rs: 'usuarioCreado',
                                                     token:token
@@ -106,67 +106,74 @@ const express = require('express');
             })        
         // FORGOT PASSWORD
             router.post('/forgot', (req, res) => {
-                Usuarios.find({email:req.body.emailTo})
-                    .exec()
+                // 1. Crear token
+                const token = jwt.sign(
+                    {
+                        email: usuario[0].email //este parametro de donde lo va a tomar?
+                    },
+                    process.env.JWT_KEY,
+                    {
+                        expiresIn: "1h"
+                    }
+                );
+                res.status(200).json({rs:'tokenCreado',token:token});
+                // o asi ? pero el foo bar? Probar el sign up quitando el foo bar de ahi
+                // const token = jwt.sign({ foo: 'bar' }, 'secret');
+                // o asi?
+                jwt.sign({
+                    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                    data: 'foobar'
+                  }, 'secret');
+                // 2. Buscar si existe el email
+                Usuarios.findOne({email:req.body.email})
+                    .exec() // funciona igual sino se coloca ?
                     .then(usuario => {
-                        if (usuario.length >= 1) {
-                            res.status(200).json({rs:'emailConseguido'})
-                            //token start
-                                const token = jwt.sign(
-                                    { // se puede pasar el id por aqui?me parece inseguro
-                                        email: usuario[0].email
-                                    },
-                                    process.env.JWT_KEY,
-                                    {
-                                        expiresIn: "1h"
-                                    }
-                                    // ,(error,emailtoken)=>{
-                                    //     // aqui va el callback donde entraria nodemailer
-                                    // }
-                                );
-                                res.status(200).json({rs:'tokenCreado',token:token});
-                            //token end 
-                            //nodemailer top
-                                var transporter = nodemailer.createTransport({
-                                    service: process.env.SERVICE,
-                                    auth:{user: process.env.USER,pass: process.env.PASSWORD}
-                                });
-                                var mailOptions = {
-                                    from: process.env.USER,
-                                    to: req.body.emailTo,
-                                    // subject: req.body.emailSubjet, sino envia el html, habra que pasar subject o text por el html?
-                                    // text: req.body.emailText,
-                                    html: 
-                                    `
-                                        <h1>Click the link below to reset your password</h1>
-                                        <h6>This url will expired in 1 hour</h6>
-                                        <a href='localhost:8080/reset/${token}'>Reset Password</a>
-                                    `
-                                };
-                                transporter.sendMail(mailOptions, function (error, info) {
-                                    if (error){
-                                        console.log(error);
-                                    }else {
-                                        res.json({rs:'emailEnviado'});
-                                    }
-                                });
-                                // res.json({rs:'enviarEmailCorrecto'}); revisar este error, es necesario?
-                            //nodemailer end                             
-                        } else {
-                            res.status(200).json({rs: 'emailNoExiste'})
-                        }
+                        if (!usuario) {res.json({rs:'noUserFound'})}
+                        usuario.resetToken = token;
+                        usuario.resetTokenExpiration = Date.now() + 3600000;
+                        return usuario.save();
+                        //se podra retornar el id por aqui? 
                     })
-                    .catch(error =>{
+                    .then(result => {
+                        var transporter = nodemailer.createTransport({
+                            service: process.env.SERVICE,
+                            auth: { user: process.env.USER, pass: process.env.PASSWORD }
+                        });
+                        var mailOptions = {
+                            from: process.env.USER,
+                            to: req.body.emailTo,
+                            subject: 'Password Reset',
+                            html:
+                                `
+                                    <h1>Click the link below to reset your password</h1>
+                                    <h6>This url will expired in 1 hour</h6>
+                                    <a href='localhost:8080/reset/${token}'>Reset Password</a>
+                                `
+                        };
+                        transporter.sendMail(mailOptions, function (error, info) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+                                res.json({ rs: 'emailEnviado' });
+                            }
+                        });
+                    })
+                    .catch(err => {
                         console.log(error);
                     })
             })
         // RESET PASSWORD
             router.get('reset/:token',checkForgot,(req,res)=>{
-                // Ideas
-                    // 1. en el momento del /reset, el email debe estar oculto para que sea ese registro el que se va a buscar y luego actualizar
-                    // el problema de estar oculto es que es modificable tambien
-                // obtener id del email asociado?
-                // aqui se haria la actualizacion
+                // 1. Obtener el token por el parametro
+                const token = req.params.token;
+                Usuario.findOne({resetToken:token,resetTokenExpiration:{$gt:Date.now()}})
+                        .exec()
+                        .then(usuario=>{
+                              //como pasar el id?
+                        })
+                        .catch(error =>{
+                            console.log(error);
+                        })
             }) 
     // CRUD
         // Home

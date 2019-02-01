@@ -5,6 +5,8 @@ const UsuarioEsquema = new Schema({
     fotoPerfil: String,
     email: String,
     password: String,
+    resetToken: String,
+    resetTokenExpiration: Date,
     confirmacionCuenta: Boolean,
     refComentario:[{type:Schema.Types.ObjectId, ref:'Comentarios'}]
 },{timestamps:true,versionKey:false})
