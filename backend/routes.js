@@ -120,6 +120,9 @@ const express = require('express');
                                     {
                                         expiresIn: "1h"
                                     }
+                                    // ,(error,emailtoken)=>{
+                                    //     // aqui va el callback donde entraria nodemailer
+                                    // }
                                 );
                                 res.status(200).json({rs:'tokenCreado',token:token});
                             //token end 
@@ -163,7 +166,7 @@ const express = require('express');
                     // 1. en el momento del /reset, el email debe estar oculto para que sea ese registro el que se va a buscar y luego actualizar
                     // el problema de estar oculto es que es modificable tambien
                 // obtener id del email asociado?
-                const newPassword = req.body.password;
+                // aqui se haria la actualizacion
             }) 
     // CRUD
         // Home
