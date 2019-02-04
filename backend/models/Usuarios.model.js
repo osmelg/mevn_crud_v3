@@ -5,9 +5,9 @@ const UsuarioEsquema = new Schema({
     fotoPerfil: String,
     email: String,
     password: String,
+    confirmedAccount: Boolean,
     resetToken: String,
-    resetTokenExpiration: Date,
-    confirmacionCuenta: Boolean,
+    confirmToken: String,
     refComentario:[{type:Schema.Types.ObjectId, ref:'Comentarios'}]
 },{timestamps:true,versionKey:false})
 module.exports = mongoose.model('Usuarios',UsuarioEsquema);

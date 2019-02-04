@@ -52,7 +52,7 @@ const express = require('express');
                                 },
                                 process.env.JWT_KEY,
                                 {
-                                    expiresIn: "600s"
+                                    expiresIn: "48h"
                                 }
                             );
                             return res.status(200).json({
@@ -66,22 +66,19 @@ const express = require('express');
                     })
                 })
             })
-        // POST (SIGN UP)
-            router.post('/signup',upload.single('fotoPerfil'), (req, res) => {
-                Usuarios.find({email: req.body.email})
+        // POST (SIGN UP) 
+            router.post('/signup',upload.single('fotoPerfil'),(req,res)=>{
+                Usuarios.find({email:req.body.email})
                     .exec()
-                    .then(usuario => {
-                        if (usuario.length >= 1) {
-                            return res.status(401).json({
-                                rs: 'emailExiste'
-                            })
+                    .then(usuario=>{
+                        if (usuario.length >= 1) {return res.status(401).json({rs:'emailExiste'})
                         } else if (usuario.length < 1){
                             bcrypt.hash(req.body.password, 10, (error, passwordCifrado) => {
-                                if (error) {
-                                    return res.status(500).json({rs:'errorEncriptacion'})
-                                } if(passwordCifrado) {
+                                if (error){return res.status(500).json({rs:'errorEncriptacion'})
+                                }if(passwordCifrado){
                                     const usuario = new Usuarios();
                                     usuario.nombre = req.body.nombre;
+                                    // Validacion de insercion de imagen
                                     if (usuario.fotoPerfil === undefined){
                                         usuario.fotoPerfil = 'upload\\O s m e L.jpg';
                                     }else{
@@ -89,24 +86,67 @@ const express = require('express');
                                     }
                                     usuario.email = req.body.email;
                                     usuario.password = passwordCifrado;
-                                    usuario.confirmacionCuenta = false;
                                     usuario.save(function (error) {
-                                        if (error) {
-                                            res.json({ error: 'error' });
-                                        } else {
-                                            jwt.sign({usuario:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{
-                                                res.json({
-                                                    rs: 'usuarioCreado',
-                                                    token:token
-                                                })
+                                        if(error){res.json({ error: 'error' })
+                                        }else{
+                                                // jwt.sign({usuario:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{ le quite expiresIn para que sea infinito?
+                                                jwt.sign({usuario:usuario.nombre},'secret',(err,token)=>{
+                                                // res.json({rs:'usuarioCreado',token:token}) // es necesario sacar el token por aqui ? creo que no
+                                                res.status(200).json({rs:'usuarioCreado'})
                                             })
+                                            // 3. enviar url token por email
+                                            var transporter = nodemailer.createTransport({
+                                                service: process.env.SERVICE,
+                                                auth:{user:process.env.USER,pass:process.env.PASSWORD}
+                                            });
+                                            var mailOptions = {
+                                                from: process.env.USER,
+                                                to: req.body.emailTo,
+                                                subject: 'Confirm Account',
+                                                html:
+                                                    `   <h1 style="text-align: center;">Click the link below to confirm your account</h1>
+                                                        <h3 style="text-align: center;"><a href="http://localhost:8080/confirm/${token}">Confirm</a></h3>
+                                                    `
+                                            };
+                                            transporter.sendMail(mailOptions, function (error, info) {
+                                                if (error) {
+                                                    res.json({error:error})
+                                                } else {
+                                                    // res.json({rs:'emailEnviado'});
+                                                    res.status(200).send('emailEnviado')
+                                                }
+                                            }) 
                                         }
                                     })
                                 }
                             })
                         }
                     })
+                    .catch(error =>{
+                        console.log(error);
+                    })
             })
+        // GET SIGN UP CONFIRM
+            router.get('/confirm:/token',(req,res)=>{
+                const confirmToken = req.params.token;
+                Usuarios.findOneAndUpdate({
+                    confirmToken:confirmToken
+                },
+                {$set:{confirmedAccount:true,confirmToken:null}},{upsert:true },(error,usuario)=>{
+                    if(error){res.status(401).json({rs:'usuarioConfirmError'})
+                    }else{
+                        jwt.sign({usuario:usuario.nombre},'secret',(error,token)=>{
+                            if (error){console.log(error)}
+                            res.status(200).json({rs:'usuarioConfirmado',token:token})
+                        })                        
+                        // res.status(200).json({rs:'usuarioConfirmado'});
+                    }
+                })
+            })
+            // 4. entrar al url token y verificarlo
+            // 5. cambiar la confirmacion a verdadera
+            // 6. Crear token de sesion
+            // 7. redirigir hacia el dashboard
         // CHANGE PASSWORD
             // FORGOT PASSWORD
                 router.post('/forgot', (req, res) => {
@@ -148,21 +188,15 @@ const express = require('express');
                             })
                 })
             // RESET PASSWORD
-                // GET xq no agarra el cliente el token?
+                // GET 
                     router.get('/reset/:token',(req,res)=>{
-                        // 1. Obtener el token por el parametro
                             const resetToken = req.params.token;
-                            console.log(resetToken);
-                        // 2. verificar tiempo de expiracion el token
-                            // ya se pasa como middleware
-                        // 3. verificar token con respecto a la bdd y retornar id al cliente
-                        // res.json({rs:'getComentariosError'})
                             Usuarios.findOne({resetToken:resetToken})
                                     .exec()
                                     .then(usuario=>{
                                         const usuarioId = usuario._id;
+                                        // VERIFICAR el TOSTRING
                                         const theid = usuarioId.toString();
-                                        console.log(theid);
                                         res.json({rs:theid})
                                     })
                                     .catch(error =>{
@@ -171,7 +205,6 @@ const express = require('express');
                     }) 
                 // POST
                     router.post('/reset',(req,res) =>{
-                        // 1. envia el nuevo password con el id
                         bcrypt.hash(req.body.password, 10, (err, hash) => {
                             if (err) {
                                 return res.status(500).json({error:err})
@@ -259,3 +292,45 @@ const express = require('express');
             }) 
         // Exportar rutas
             module.exports = router;
+        // POST (SIGN UP) BACKUP
+            // router.post('/signup',upload.single('fotoPerfil'), (req, res) => {
+            //     Usuarios.find({email: req.body.email})
+            //         .exec()
+            //         .then(usuario => {
+            //             if (usuario.length >= 1) {
+            //                 return res.status(401).json({
+            //                     rs: 'emailExiste'
+            //                 })
+            //             } else if (usuario.length < 1){
+            //                 bcrypt.hash(req.body.password, 10, (error, passwordCifrado) => {
+            //                     if (error) {
+            //                         return res.status(500).json({rs:'errorEncriptacion'})
+            //                     } if(passwordCifrado) {
+            //                         const usuario = new Usuarios();
+            //                         usuario.nombre = req.body.nombre;
+            //                         // Validacion de insercion de imagen
+            //                         if (usuario.fotoPerfil === undefined){
+            //                             usuario.fotoPerfil = 'upload\\O s m e L.jpg';
+            //                         }else{
+            //                             usuario.fotoPerfil = req.file.path;    
+            //                         }
+            //                         usuario.email = req.body.email;
+            //                         usuario.password = passwordCifrado;
+            //                         usuario.confirmacionCuenta = false;
+            //                         usuario.save(function (error) {
+            //                             if (error) {
+            //                                 res.json({ error: 'error' });
+            //                             } else {
+            //                                 jwt.sign({usuario:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{
+            //                                     res.json({
+            //                                         rs: 'usuarioCreado',
+            //                                         token:token
+            //                                     })
+            //                                 })
+            //                             }
+            //                         })
+            //                     }
+            //                 })
+            //             }
+            //         })
+            // })            

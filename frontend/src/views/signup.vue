@@ -71,7 +71,7 @@ export default {
                     })
                     .then(response =>{
                         if(response.data.rs === 'usuarioCreado'){
-                            alert('usuarioCreado')
+                            alert('User Created, please confirm it via email');
                             // const toast = this.$swal.mixin({
                             //     toast: true,
                             //     position: 'top-end',
@@ -82,8 +82,8 @@ export default {
                             //     type: 'success',
                             //     title: 'Usuario Creado'
                             //     })
-                            localStorage.setItem('token',response.data.token);
-                            this.$router.push('/dashboard');
+                            // localStorage.setItem('token',response.data.token);
+                            // this.$router.push('/dashboard');
                         }
                     })
                     .catch(error=>{
