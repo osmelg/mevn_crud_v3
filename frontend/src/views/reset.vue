@@ -8,9 +8,10 @@
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">
-                <p>Type your email</p>
-                <form @submit.prevent='resetEmail'>
-                    <input type="text" v-model="emailTo" placeholder="email">
+                <p>Type your password</p>
+                <form @submit.prevent='changePassword'>
+                    <input type="text" v-model="password" placeholder="password">
+                    <input type="hidden" :value="usuarioId">
                     <button>Send</button>                    
                 </form>
             </div>
@@ -28,27 +29,38 @@ import axios from 'axios';
 export default {
     data(){
         return{
-            emailTo:''
+            password:'',
+            usuarioId:''
         }
     },
+    created(){
+        this.getData();
+    },
     methods:{
-        resetEmail(){
-            axios.post('http://localhost:3000/forgot',
-                {
-                    emailTo:this.emailTo,
+        getData(){
+            axios.get('http://localhost:3000/reset/'+this.$route.params.token) 
+                //  .get('http://localhost:3000/dashboard/comentario/'+this.$route.params.token) 
+                 .then(res =>{
+                     this.usuarioId = res.data.rs;
                 })
-                .then(response =>{
-                    if(response.data.rs === 'emailEnviado'){
-                        alert('emailEnviado')
-                    }else if (response.data.rs === 'emailNoExiste'){
-                        alert('emailNoExiste')
-                    }
+                 .catch(error =>{
+                    alert(error);
+                })
+            },
+        changePassword(){
+            axios
+                .post('http://localhost:3000/reset',{
+                    password:this.password,
+                    id:this.usuarioId
+                })
+                .then(response=>{
+                    console.log(response);
                 })
                 .catch(error=>{
-                    alert(error);
-                })  
+                    console.log(error);
+                })
+            }
         }
-    }
 }
 </script>
 

@@ -43,7 +43,7 @@ export default {
   created(){
     const token = localStorage.getItem('token');
     const descifrado = jwt.decode(token);
-    this.nombreUsuario = descifrado.fotoPerfil;
+    this.nombreUsuario = descifrado.usuario;
   }
 }
 </script>

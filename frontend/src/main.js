@@ -20,10 +20,10 @@ Vue.config.productionTip = false
           email:'Type a valid email',
           required:'Type a email',
         },
-        password: {
-          required:'Type a password',
-          min_value:'Password min 2 digits'
-        }
+        // password: {
+        //   required:'Type a password',
+        //   min_value:'Password min 2 digits'
+        // }
       }    
     }
   };

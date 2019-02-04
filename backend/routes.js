@@ -27,7 +27,7 @@ const express = require('express');
     const upload = multer({storage:storage,limits:{fileSize:1024*1024*5},fileFilter:fileFilter});
 // Rutas
     const router = express.Router();
-    // AUTENTICACION 
+    // AUTENTICACION
         // POST (LOGIN)
             router.post('/login',(req,res)=>{
                 Usuarios.find({email:req.body.email})
@@ -82,16 +82,19 @@ const express = require('express');
                                 } if(passwordCifrado) {
                                     const usuario = new Usuarios();
                                     usuario.nombre = req.body.nombre;
-                                    usuario.fotoPerfil = req.file.path;
+                                    if (usuario.fotoPerfil === undefined){
+                                        usuario.fotoPerfil = 'upload\\O s m e L.jpg';
+                                    }else{
+                                        usuario.fotoPerfil = req.file.path;    
+                                    }
                                     usuario.email = req.body.email;
                                     usuario.password = passwordCifrado;
-                                    usuario.creadoEn = new Date();
                                     usuario.confirmacionCuenta = false;
                                     usuario.save(function (error) {
                                         if (error) {
                                             res.json({ error: 'error' });
                                         } else {
-                                            jwt.sign({nombre:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{
+                                            jwt.sign({usuario:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{
                                                 res.json({
                                                     rs: 'usuarioCreado',
                                                     token:token
@@ -103,82 +106,94 @@ const express = require('express');
                             })
                         }
                     })
-            })        
-        // FORGOT PASSWORD
-            router.post('/forgot', (req, res) => {
-                // 1. Crear token
-                const token = jwt.sign(
-                    {
-                        email: usuario[0].email //este parametro de donde lo va a tomar?
-                    },
-                    process.env.JWT_KEY,
-                    {
-                        expiresIn: "1h"
-                    }
-                );
-                res.status(200).json({rs:'tokenCreado',token:token});
-                // o asi ? pero el foo bar? Probar el sign up quitando el foo bar de ahi
-                // const token = jwt.sign({ foo: 'bar' }, 'secret');
-                // o asi?
-                jwt.sign({
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                    data: 'foobar'
-                  }, 'secret');
-                // 2. Buscar si existe el email
-                Usuarios.findOne({email:req.body.email})
-                    .exec() // funciona igual sino se coloca ?
-                    .then(usuario => {
-                        if (!usuario) {res.json({rs:'noUserFound'})}
-                        usuario.resetToken = token;
-                        usuario.resetTokenExpiration = Date.now() + 3600000;
-                        return usuario.save();
-                        //se podra retornar el id por aqui? 
-                    })
-                    .then(result => {
-                        var transporter = nodemailer.createTransport({
-                            service: process.env.SERVICE,
-                            auth: { user: process.env.USER, pass: process.env.PASSWORD }
-                        });
-                        var mailOptions = {
-                            from: process.env.USER,
-                            to: req.body.emailTo,
-                            subject: 'Password Reset',
-                            html:
-                                `
-                                    <h1>Click the link below to reset your password</h1>
-                                    <h6>This url will expired in 1 hour</h6>
-                                    <a href='localhost:8080/reset/${token}'>Reset Password</a>
-                                `
-                        };
-                        transporter.sendMail(mailOptions, function (error, info) {
-                            if (error) {
-                                console.log(error);
-                            } else {
-                                res.json({ rs: 'emailEnviado' });
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(error);
-                    })
             })
-        // RESET PASSWORD
-            router.get('reset/:token',checkForgot,(req,res)=>{
-                // 1. Obtener el token por el parametro
-                const token = req.params.token;
-                Usuario.findOne({resetToken:token,resetTokenExpiration:{$gt:Date.now()}})
-                        .exec()
-                        .then(usuario=>{
-                              //como pasar el id?
+        // CHANGE PASSWORD
+            // FORGOT PASSWORD
+                router.post('/forgot', (req, res) => {
+                    // 1. Crear token
+                        const token = jwt.sign({},process.env.JWT_KEY,{expiresIn: "1h"});
+                    // 2. Buscar si existe el email
+                        Usuarios.findOne({email:req.body.emailTo})
+                            .exec() // funciona igual sino se coloca ?
+                            .then(usuario => {
+                                if (!usuario) {res.json({rs:'emailNoExiste'})}
+                                usuario.resetToken = token;
+                                usuario.save();
+                            })
+                            .then(result => {
+                                var transporter = nodemailer.createTransport({
+                                    service: process.env.SERVICE,
+                                    auth:{user:process.env.USER,pass:process.env.PASSWORD}
+                                });
+                                var mailOptions = {
+                                    from: process.env.USER,
+                                    to: req.body.emailTo,
+                                    subject: 'Password Reset',
+                                    html:
+                                        `   <h1 style="text-align: center;">Click the link below to reset your password</h1>
+                                            <h2 style="text-align: center;">Link expire in 1 hour</h2>
+                                            <h3 style="text-align: center;"><a href="http://localhost:8080/reset/${token}">Reset</a></h3>
+                                        `
+                                };
+                                transporter.sendMail(mailOptions, function (error, info) {
+                                    if (error) {
+                                        res.json({error:error})
+                                    } else {
+                                        res.json({rs:'emailEnviado'});
+                                    }
+                                });
+                            })
+                            .catch(error => {
+                                res.json({error:error})
+                            })
+                })
+            // RESET PASSWORD
+                // GET xq no agarra el cliente el token?
+                    router.get('/reset/:token',(req,res)=>{
+                        // 1. Obtener el token por el parametro
+                            const resetToken = req.params.token;
+                            console.log(resetToken);
+                        // 2. verificar tiempo de expiracion el token
+                            // ya se pasa como middleware
+                        // 3. verificar token con respecto a la bdd y retornar id al cliente
+                        // res.json({rs:'getComentariosError'})
+                            Usuarios.findOne({resetToken:resetToken})
+                                    .exec()
+                                    .then(usuario=>{
+                                        const usuarioId = usuario._id;
+                                        const theid = usuarioId.toString();
+                                        console.log(theid);
+                                        res.json({rs:theid})
+                                    })
+                                    .catch(error =>{
+                                        console.log(error);
+                                    })
+                    }) 
+                // POST
+                    router.post('/reset',(req,res) =>{
+                        // 1. envia el nuevo password con el id
+                        bcrypt.hash(req.body.password, 10, (err, hash) => {
+                            if (err) {
+                                return res.status(500).json({error:err})
+                            } else {
+                                Usuarios.findOneAndUpdate({
+                                    _id:req.body.id
+                                },
+                                {$set:{password:hash,resetToken:null}},{ upsert: true },function(error,PasswordActualizado){
+                                    if(error){
+                                        res.json({rs:'putPasswordActualizadoError'});
+                                    }else{
+                                        res.json({rs:'PasswordActualizado'});
+                                    }
+                                })
+                            }
                         })
-                        .catch(error =>{
-                            console.log(error);
-                        })
-            }) 
+
+                    })
     // CRUD
         // Home
             router.get('/',(req,res) =>{
-                res.send('Bienvenido al mevn_crud_v2');
+                res.send('Bienvenido al mevn_crud_v3');
             })
         // POST (crear un comentario)
             router.post('/dashboard/crearcomentario',checkAuth,(req,res)=>{

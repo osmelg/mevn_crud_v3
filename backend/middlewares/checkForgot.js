@@ -5,6 +5,6 @@ module.exports = (req,res,next)=>{
         //req.userChecked = decoded; //funcion de esta linea?
         next();
     } catch (error) {
-        console.log(error);
+        res.status(400).json({rs:'tokenExpired',error:error})
     }
 }

@@ -6,6 +6,7 @@ import comentario from './views/comentario.vue'
 import login from './views/login.vue'
 import signup from './views/signup.vue'
 import forgot from './views/forgot.vue'
+import reset from './views/reset.vue'
 
 Vue.use(Router)
 
@@ -18,7 +19,8 @@ let router = new Router({
     { path: '/dashboard/comentario/:id',name: 'comentario',component: comentario,meta:{requiresAuth:true}},
     { path: '/login',name: 'login',component: login},
     { path: '/signup',name: 'signup',component: signup},
-    { path: '/forgot',name: 'forgot',component: forgot}
+    { path: '/forgot',name: 'forgot',component: forgot},
+    { path: '/reset/:token',name: 'reset',component: reset}
   ]
 })
 router.beforeEach((to, from, next) => {
