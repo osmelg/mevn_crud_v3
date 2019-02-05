@@ -89,6 +89,8 @@ const express = require('express');
                                     usuario.save(function (error) {
                                         if(error){res.json({ error: 'error' })
                                         }else{
+                                                // var obj = this.usuario();
+                                                // delete obj.password
                                                 // jwt.sign({usuario:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{ le quite expiresIn para que sea infinito?
                                                 jwt.sign({usuario:usuario.nombre},'secret',(err,token)=>{
                                                 // res.json({rs:'usuarioCreado',token:token}) // es necesario sacar el token por aqui ? creo que no
