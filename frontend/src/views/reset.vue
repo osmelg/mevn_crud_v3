@@ -39,7 +39,6 @@ export default {
     methods:{
         getData(){
             axios.get('http://localhost:3000/reset/'+this.$route.params.token) 
-                //  .get('http://localhost:3000/dashboard/comentario/'+this.$route.params.token) 
                  .then(res =>{
                      this.usuarioId = res.data.rs;
                 })

@@ -25,28 +25,30 @@ export default {
     },
     methods:{
         getData(){
-            axios.get('http://localhost:3000/reset/'+this.$route.params.token) 
+            axios.get('http://localhost:3000/confirm/'+this.$route.params.token) 
                  .then(response =>{
                     if (response.data.rs === 'usuarioConfirmado'){
+                        alert('usuarioConfirmado');
                         // falta recibir token de SESION
-                        localStorage.setItem('token',response.data.token);
-                        this.$router.push('/dashboard');
+                        // localStorage.setItem('token',response.data.token);
+                        // this.$router.push('/dashboard');
                     }
                 })
                  .catch(error =>{
-                    if (error.data.rs === 'usuarioConfirmError')
-                    {
-                        alert('Error when trying to verify your data');
-                    }else{
-                        alert(error);
-                    }
+                     alert(error)
+                    // if (error.data.rs === 'usuarioConfirmError')
+                    // {
+                    //     alert('Error when trying to verify your data');
+                    // }else{
+                    //     alert(error);
+                    // }
                 })
             }
         }
 }
 </script>
 
-<style>
+<style scoped>
 *                            {margin: 0; padding: 0;}
 .grid                           {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
     .headGrid                       {height: 95vh; background: rgb(255, 0, 0); display: grid; grid-area: headGrid;}

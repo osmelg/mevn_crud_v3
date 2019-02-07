@@ -7,6 +7,7 @@ import login from './views/login.vue'
 import signup from './views/signup.vue'
 import forgot from './views/forgot.vue'
 import reset from './views/reset.vue'
+import confirm from './views/confirm.vue'
 
 Vue.use(Router)
 
@@ -14,13 +15,14 @@ let router = new Router({
   mode: 'history',
   routes: [
     {path: '*', redirect:'/login'},
-    { path: '/dashboard',name: 'dashboard',component: dashboard,meta:{requiresAuth:true}},
-    { path: '/dashboard/crearcomentario',name: 'crearcomentario',component: crearcomentario,meta:{requiresAuth:true}},
-    { path: '/dashboard/comentario/:id',name: 'comentario',component: comentario,meta:{requiresAuth:true}},
-    { path: '/login',name: 'login',component: login},
-    { path: '/signup',name: 'signup',component: signup},
-    { path: '/forgot',name: 'forgot',component: forgot},
-    { path: '/reset/:token',name: 'reset',component: reset}
+    {path: '/dashboard',name: 'dashboard',component: dashboard,meta:{requiresAuth:true}},
+    {path: '/dashboard/crearcomentario',name: 'crearcomentario',component: crearcomentario,meta:{requiresAuth:true}},
+    {path: '/dashboard/comentario/:id',name: 'comentario',component: comentario,meta:{requiresAuth:true}},
+    {path: '/login',name: 'login',component: login},
+    {path: '/signup',name: 'signup',component: signup},
+    {path: '/forgot',name: 'forgot',component: forgot},
+    {path: '/reset/:token',name: 'reset',component: reset},
+    {path: '/confirm/:token',name: 'confirm',component: confirm}
   ]
 })
 router.beforeEach((to, from, next) => {

@@ -80,44 +80,45 @@ const express = require('express');
                                     usuario.nombre = req.body.nombre;
                                     // Validacion de insercion de imagen
                                     if (usuario.fotoPerfil === undefined){
-                                        usuario.fotoPerfil = 'upload\\O s m e L.jpg';
+                                        usuario.fotoPerfil = 'upload\\default.jpg';
                                     }else{
                                         usuario.fotoPerfil = req.file.path;    
                                     }
                                     usuario.email = req.body.email;
                                     usuario.password = passwordCifrado;
+                                    usuario.confirmedAccount = false;
                                     usuario.save(function (error) {
                                         if(error){res.json({ error: 'error' })
                                         }else{
                                                 // var obj = this.usuario();
                                                 // delete obj.password
-                                                // jwt.sign({usuario:usuario.nombre},'secret',{expiresIn:'300s'},(err,token)=>{ le quite expiresIn para que sea infinito?
                                                 jwt.sign({usuario:usuario.nombre},'secret',(err,token)=>{
-                                                // res.json({rs:'usuarioCreado',token:token}) // es necesario sacar el token por aqui ? creo que no
-                                                res.status(200).json({rs:'usuarioCreado'})
+                                                    usuario.confirmToken = token;
+                                                    usuario.save();
+                                                var transporter = nodemailer.createTransport({
+                                                    service: process.env.SERVICE,
+                                                    auth:{user:process.env.USER,pass:process.env.PASSWORD}
+                                                });
+                                                var mailOptions = {
+                                                    from: process.env.USER,
+                                                    to: req.body.email,
+                                                    subject: 'Confirm Account',
+                                                    html:
+                                                        `   <h1 style="text-align: center;">Click the link below to confirm your account</h1>
+                                                            <h3 style="text-align: center;"><a href="http://localhost:8080/confirm/${token}">Confirm</a></h3>
+                                                        `
+                                                };
+                                                transporter.sendMail(mailOptions, function (error, info) {
+                                                    if (error) {
+                                                        res.json({error:error})
+                                                    } else {
+                                                        // res.send('emailEnviado')
+                                                        console.log('emailEnviado');
+                                                        
+                                                    }
+                                                })                                                     
+                                                res.json({rs:'usuarioCreado',token}) // este es del token
                                             })
-                                            // 3. enviar url token por email
-                                            var transporter = nodemailer.createTransport({
-                                                service: process.env.SERVICE,
-                                                auth:{user:process.env.USER,pass:process.env.PASSWORD}
-                                            });
-                                            var mailOptions = {
-                                                from: process.env.USER,
-                                                to: req.body.emailTo,
-                                                subject: 'Confirm Account',
-                                                html:
-                                                    `   <h1 style="text-align: center;">Click the link below to confirm your account</h1>
-                                                        <h3 style="text-align: center;"><a href="http://localhost:8080/confirm/${token}">Confirm</a></h3>
-                                                    `
-                                            };
-                                            transporter.sendMail(mailOptions, function (error, info) {
-                                                if (error) {
-                                                    res.json({error:error})
-                                                } else {
-                                                    // res.json({rs:'emailEnviado'});
-                                                    res.status(200).send('emailEnviado')
-                                                }
-                                            }) 
                                         }
                                     })
                                 }
@@ -129,26 +130,32 @@ const express = require('express');
                     })
             })
         // GET SIGN UP CONFIRM
-            router.get('/confirm:/token',(req,res)=>{
+            router.get('/confirm/:token',(req,res)=>{
                 const confirmToken = req.params.token;
                 Usuarios.findOneAndUpdate({
                     confirmToken:confirmToken
                 },
-                {$set:{confirmedAccount:true,confirmToken:null}},{upsert:true },(error,usuario)=>{
-                    if(error){res.status(401).json({rs:'usuarioConfirmError'})
+                {$set:{confirmToken:null,confirmedAccount:true}},{ upsert: true },function(error,usuario){
+                    if(error){
+                        res.json(error)
                     }else{
-                        jwt.sign({usuario:usuario.nombre},'secret',(error,token)=>{
-                            if (error){console.log(error)}
-                            res.status(200).json({rs:'usuarioConfirmado',token:token})
-                        })                        
-                        // res.status(200).json({rs:'usuarioConfirmado'});
+                        const token = jwt.sign(
+                            {
+                                email: usuario[0].email
+                            },
+                            process.env.JWT_KEY,
+                            {
+                                expiresIn: "1h"
+                            }
+                        );
+                        res.status(200).json({
+                            rs: 'usuarioConfirmado',
+                            token: token
+                        });
+                        // res.json({rs:'usuarioConfirmado'});
                     }
-                })
+                })           
             })
-            // 4. entrar al url token y verificarlo
-            // 5. cambiar la confirmacion a verdadera
-            // 6. Crear token de sesion
-            // 7. redirigir hacia el dashboard
         // CHANGE PASSWORD
             // FORGOT PASSWORD
                 router.post('/forgot', (req, res) => {
