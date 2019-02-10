@@ -2,6 +2,7 @@
     const bodyParser = require('body-parser');
     const cors = require('cors');
     const mongoose = require('mongoose');
+    // const expressValidator = require('express-validator');
     const routes = require('./routes.js');
     const express = require('express');
 // Inicializamos express
@@ -14,6 +15,7 @@
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
     app.use(cors());
+    // app.use(expressValidator);
     app.use('/', routes);
     app.use('/login', routes);
     app.use('/signup', routes);
