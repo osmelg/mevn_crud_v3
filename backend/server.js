@@ -20,18 +20,15 @@
     app.use('/dashboard', routes);
     app.use('/dashboard/crearcomentario', routes);
     app.use('/dashboard/comentario/:id', routes);
-    //nuevos, revisar aqui
-    app.use('/confirm/:token', routes);
     app.use('/forgot', routes);
+    app.use('/confirm/:token', routes);
     app.use('/reset/:token', routes);
     app.use('/reset', routes);
-    app.use('/reset', routes);
-
 // Mongoose
-    mongoose.connect('mongodb://localhost/mevn_crud_v3',{useNewUrlParser:true},(error)=>{
-        if(error){
+    mongoose.connect('mongodb://localhost/mevn_crud_v3', { useNewUrlParser: true, useFindAndModify: false }, (error) => {
+        if (error) {
             throw error;
-        }else{
+        } else {
             console.log('conectado a mongoDB');
         }
     })

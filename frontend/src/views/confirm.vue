@@ -28,14 +28,13 @@ export default {
             axios.get('http://localhost:3000/confirm/'+this.$route.params.token) 
                  .then(response =>{
                     if (response.data.rs === 'usuarioConfirmado'){
-                        alert('usuarioConfirmado');
-                        // falta recibir token de SESION
-                        // localStorage.setItem('token',response.data.token);
-                        // this.$router.push('/dashboard');
+                        localStorage.setItem('token',response.data.token);
+                        this.$router.push('/dashboard');
                     }
                 })
                  .catch(error =>{
-                     alert(error)
+                    //  alert(error.response.status)
+                     console.log(JSON.stringify(error))
                     // if (error.data.rs === 'usuarioConfirmError')
                     // {
                     //     alert('Error when trying to verify your data');

@@ -10,7 +10,7 @@
             <div class="bodyContainer">
                 <p>Type your password</p>
                 <form @submit.prevent='changePassword'>
-                    <input type="text" v-model="password" placeholder="password">
+                    <input type="password" v-model="password" placeholder="password">
                     <input type="hidden" :value="usuarioId">
                     <button>Send</button>                    
                 </form>
@@ -53,7 +53,8 @@ export default {
                     id:this.usuarioId
                 })
                 .then(response=>{
-                    console.log(response);
+                    localStorage.setItem('token',response.data.token);
+                    this.$router.push('/dashboard');
                 })
                 .catch(error=>{
                     console.log(error);

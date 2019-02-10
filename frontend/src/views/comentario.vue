@@ -78,8 +78,8 @@ export default {
         }
       })
       .catch(error=>{
-        if(error.response.data.rs === 'putComentarioActualizadoError'){
-          alert('putComentarioActualizadoError');
+        if(error.response.data.rs === 'comentarioActualizadoError'){
+          alert('comentarioActualizadoError');
         }
       })
     },
