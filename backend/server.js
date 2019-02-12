@@ -3,6 +3,7 @@
     const cors = require('cors');
     const mongoose = require('mongoose');
     // const expressValidator = require('express-validator');
+    const { body } = require('express-validator/check');
     const routes = require('./routes.js');
     const express = require('express');
 // Inicializamos express

@@ -13,15 +13,6 @@ const router = express.Router();
     // ACCESO 
         router.post('/login',(req,res)=>{
             // 0. Verificar datos del cliente
-            // req.checkBody('email','El email no puede estar vacio').notEmpty();
-            // req.checkBody('password','El password no puede estar vacio').notEmpty();
-            // var errors = req.validationErrors();
-            // if (errors){
-            //     console.log(errors);
-            // }else{
-            //     //satisfactorio
-                
-            // }
             // 1. Verificar si usuario existe
             Usuarios.find({email:req.body.email})
             .then(usuario =>{
@@ -80,6 +71,9 @@ const router = express.Router();
                                     usuario.save(function (error) {
                                         if(error){res.json({error:'error'})
                                         }else{
+                                            var newObject = this.user;
+                                            newObject.
+                        
                                             // *-* Se debe eliminar el password del objeto que se va a devolver
                                             // var obj = this.usuario();
                                             // delete obj.password
