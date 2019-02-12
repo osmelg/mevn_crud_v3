@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import home from './views/home.vue'
 import dashboard from './views/dashboard.vue'
 import crearcomentario from './views/crearcomentario.vue'
 import comentario from './views/comentario.vue'
@@ -15,6 +16,7 @@ let router = new Router({
   mode: 'history',
   routes: [
     {path: '*', redirect:'/login'},
+    {path: '/home',name: 'home',component: home},
     {path: '/dashboard',name: 'dashboard',component: dashboard,meta:{requiresAuth:true}},
     {path: '/dashboard/crearcomentario',name: 'crearcomentario',component: crearcomentario,meta:{requiresAuth:true}},
     {path: '/dashboard/comentario/:id',name: 'comentario',component: comentario,meta:{requiresAuth:true}},

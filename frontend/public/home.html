@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style >
+        *                            {margin: 0; padding: 0;}
+        .grid                           {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
+            .headGrid                       {height: 25vh; display: grid; grid-area: headGrid;}
+                .headContainer                  {height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
+                    .headContainerLinks             {margin-top: 1em;}
+            .bodyGrid                       {height: 70vh; display: grid; grid-area: bodyGrid;}
+                .bodyContainer                  {max-height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
+                    .bodyContainerImage             {height: 100%; width: 100%; object-fit: cover;}
+            .footGrid                       {height: 5vh; display: grid; grid-area: footGrid;}
+                .footContainer                  {height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
+        @media screen and (min-width: 767px){
+            .bodyContainerImage             {height: 100%; width: 100%; object-fit: contain;}
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="headGrid">
+            <div class="headContainer">
+                <p>Mevn Super Crud</p>
+                <router-link to='/dashboard/crearcomentario' class="headContainerLinks">Login</router-link>
+                <router-link to='/dashboard/crearcomentario' class="headContainerLinks">SignUp</router-link>
+            </div>
+        </div>
+        <div class="bodyGrid">
+            <div class="bodyContainer">
+                <!-- <img src="hero.jpg" alt="" class="bodyContainerImage"> -->
+            </div>
+        </div>
+        <div class="footGrid">
+            <div class="footContainer">
+                <a href="https://ogportfolio.herokuapp.com/">www.osmel.tk</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
