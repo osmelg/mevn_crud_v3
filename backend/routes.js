@@ -27,7 +27,7 @@ const router = express.Router();
                         // 3. Creacion de token retornando datos del usuario (si es necesario)
                         const token = jwt.sign(
                             {
-                                nombre: usuario[0].nombre,
+                                userId: usuario[0]._id,
                                 email: usuario[0].email
                             },
                             process.env.JWT_KEY,
@@ -232,20 +232,20 @@ const router = express.Router();
                 })
 // Datos de Usuario
     // Obtener datos de usuario
-        // router.get('/dashboard/usuario/:id',checkAuth,(req,res)=>{
-        //     // 1. Buscar comentario
-        //     Comentarios.findOne({
-        //         _id:req.params.id
-        //     })
-        //     .exec(function(error,comentario){
-        //         if(error){
-        //             res.json({rs:'getComentarioError'});
-        //         }
-        //         else{
-        //             res.json(comentario);
-        //         }
-        //     })
-        // })  
+        router.get('/profile/:id',(req,res)=>{
+            // 1. Buscar comentario
+            Usuarios.findOne({
+                _id:req.params.id
+            })
+            .exec(function(error,usuario){
+                if(error){
+                    res.json({rs:'UsuariosError'});
+                }
+                else{
+                    res.json(usuario);
+                }
+            })
+        })  
 // CRUD DE COMENTARIOS
     // Home
         router.get('/',(req,res) =>{
@@ -319,13 +319,5 @@ const router = express.Router();
     router.all('*', function (req, res) {
         res.redirect("/");
     })
-    // Creando promesas para update (testear)
-        // Comentarios.findOneAndUpdate({_id:req.params.id}),
-        // {$set:{dato1:req.body.dato1,
-        //        dato2:req.body.dato2}},
-        // {upsert:true}
-        // .exec()
-        // .then()
-        // .catch()
     // Exportar rutas
         module.exports = router;         
