@@ -87,31 +87,38 @@ export default {
                     })
                     .catch(error=>{
                         if(error.response.data.rs === 'emailExiste'){
-                            alert('emailExiste')
-                            // const toast = this.$swal.mixin({
-                            //     toast: true,
-                            //     position: 'top',
-                            //     showConfirmButton: false,
-                            //     timer: 3000
-                            //     });
-                            //     toast({
-                            //     type: 'error',
-                            //     title: 'Email existe, utilice otro'
-                            //     })
+                            const toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000
+                                });
+                                toast({
+                                type: 'error',
+                                title: 'Email exists'
+                                })
                         }else if (error.response.data.rs === 'errorEncriptacion'){
-                            alert('errorEncriptacion')
-                            // const toast = this.$swal.mixin({
-                            //     toast: true,
-                            //     position: 'top',
-                            //     showConfirmButton: false,
-                            //     timer: 3000
-                            //     });
-                            //     toast({
-                            //     type: 'error',
-                            //     title: 'Error al encriptar Password'
-                            //     })
+                            const toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000
+                                });
+                                toast({
+                                type: 'error',
+                                title: 'Error encrypting password'
+                                })
                         }else{
-                            alert(error);
+                            const toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000
+                                });
+                                toast({
+                                type: 'error',
+                                title: 'Error, try again'
+                                })
                         }
                     })                   
                     }else{
@@ -132,7 +139,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* General */
     *                                           {margin: 0; padding: 0; font-size: 10px;}
     @font-face                                  {font-family: one; src: url('../assets/fonts/Oxygen-Bold.ttf');}

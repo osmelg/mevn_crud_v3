@@ -105,17 +105,16 @@ export default {
                             title: 'Password Incorrect'
                             })
                         }else{
-                            alert(error);
-                            // const toast = this.$swal.mixin({
-                            // toast: true,
-                            // position: 'top',
-                            // showConfirmButton: false,
-                            // timer: 3000
-                            // });
-                            // toast({
-                            // type: 'error',
-                            // title: `${error}`
-                            // })
+                            const toast = this.$swal.mixin({
+                            toast: true,
+                            position: 'top',
+                            showConfirmButton: false,
+                            timer: 3000
+                            });
+                            toast({
+                            type: 'error',
+                            title: `Error,try again`
+                            })
                         }
                     })                    
                 } else {
