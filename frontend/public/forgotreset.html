@@ -6,23 +6,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        html                        {background: url(hero.jpg) no-repeat center center fixed; background-size: cover; height: 100%; overflow: hidden;}
-        @font-face                  {font-family: titulo; src: url('../src/assets/fonts/AirAmerica-Regular.otf');}
+        /* html                        {background: url(hero.jpg) no-repeat center center fixed; background-size: cover; height: 100%; overflow: hidden;} */
+        @font-face                  {font-family: titulo; src: url('../src/assets/fonts/Oxygen-Bold.ttf');}
         *                            {margin: 0; padding: 0;}
         .grid                           {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
             .headGrid                       {height: 25vh; display: grid; grid-area: headGrid;}
                 .headContainer                  {height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
-                    .headContainerTitle             {font-size: 8em; font-family: titulo; color: #f63133; text-shadow: 4px 4px 2px #767677;}
+                    .headContainerTitle             {font-size: 8em; font-family: titulo; color: #B9080A; text-shadow: 4px 4px 2px #2e2e2e;}
             .bodyGrid                       {height: 70vh; display: grid; grid-area: bodyGrid;}
                 .bodyContainer                  {max-height: 100%; display: flex; justify-content: center; align-items: center;}
                     .bodyContainerImage             {height: 100%; width: 100%; object-fit: cover;}
-                        .headContainerLinks             {margin-right: 2em; padding: .5em; color: #fff; border-radius: 2em; background: #da090c; font-family: 'Courier New', Courier, monospace;}
+                        .headContainerLinks             {margin-right: 2em; padding: 1em; font-family: 'Courier New', Courier, monospace;}
             .footGrid                       {height: 5vh; display: grid; grid-area: footGrid;}
                 .footContainer                  {height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
-                    .footContainerTitle             {color: #000;}
         @media screen and (max-width: 768px){
-            html {background: url(hero.jpg) no-repeat center center fixed; background-size: contain; height: 100%; overflow: hidden;}
-            .headContainerTitle {font-size: 11vw; font-family: titulo; color: #f63133; text-shadow: 4px 4px 2px #767677;}
+            /* html {background: url(hero.jpg) no-repeat center center fixed; background-size: contain; height: 100%; overflow: hidden;} */
+            .headContainerTitle {font-size: 10vw; font-family: titulo; color: #B9080A; text-shadow: 4px 4px 2px #2e2e2e;}
         }    
     </style>
 </head>
@@ -30,18 +29,17 @@
     <div class="grid">
         <div class="headGrid">
             <div class="headContainer">
-                <p class="headContainerTitle">Mevn Super Crud</p>
+                <p class="headContainerTitle">Reset your password</p>
             </div>
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">                    
-                <router-link to='/dashboard/crearcomentario' class="headContainerLinks">Login</router-link>
-                <router-link to='/dashboard/crearcomentario' class="headContainerLinks">SignUp</router-link>  
+                <input type="text" placeholder="Type your email">
             </div>
         </div>
         <div class="footGrid">
             <div class="footContainer">
-                <a class="footContainerTitle" href="https://ogportfolio.herokuapp.com/">www.osmel.tk</a>
+                <a href="https://ogportfolio.herokuapp.com/">www.osmel.tk</a>
             </div>
         </div>
     </div>
