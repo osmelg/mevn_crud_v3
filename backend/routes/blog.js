@@ -72,9 +72,5 @@ const router = express.Router();
                 }
             })
         }) 
-// Redireccionar rutas inexistentes
-    // router.all('*', function (req, res) {
-    //     res.redirect("/");
-    // })
-    // Exportar rutas
-        module.exports = router;         
+// Exportar rutas
+    module.exports = router;         

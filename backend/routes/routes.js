@@ -1,11 +1,11 @@
 require('dotenv').config();
-const checkAuth = require('./middlewares/checkAuth');
-const checkForgot = require('./middlewares/checkForgot');
+const checkAuth = require('../middlewares/checkAuth');
+const checkForgot = require('../middlewares/checkForgot');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Usuarios = require('./models/Usuarios.model');
-const Comentarios = require('./models/Comentarios.model');
-const multerConfig = require('./middlewares/multerConfig');
+const Usuarios = require('../models/Usuarios.model');
+const Comentarios = require('../models/Comentarios.model');
+const multerConfig = require('../middlewares/multerConfig');
 const nodemailer = require('nodemailer');
 const express = require('express');
 const router = express.Router();
@@ -66,13 +66,19 @@ const router = express.Router();
                                     usuario.email = req.body.email;
                                     usuario.password = passwordCifrado;
                                     usuario.confirmedAccount = false;
-                                    // Validacion de insercion de imagen o no
-                                    if (usuario.fotoPerfil === undefined){usuario.fotoPerfil = 'upload\\default.jpg';}else{usuario.fotoPerfil = req.file.path;}                                    
+                                    // Validacion de insercion de imagen
+                                    // if (usuario.fotoPerfil === null){
+                                    //     usuario.fotoPerfil = 'upload\\default.jpg';
+                                    // }else if (usuario.fotoPerfil === undefined){
+                                    //     usuario.fotoPerfil = 'upload\\default.jpg';
+                                    // }else{
+                                        usuario.fotoPerfil = req.file.path;
+                                    // }                                    
                                     usuario.save(function (error) {
                                         if(error){res.json({error:'error'})
                                         }else{
-                                            var newObject = this.user;
-                                            newObject.
+                                            // var newObject = this.user;
+                                            // newObject.
                         
                                             // *-* Se debe eliminar el password del objeto que se va a devolver
                                             // var obj = this.usuario();

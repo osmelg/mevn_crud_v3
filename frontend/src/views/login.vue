@@ -17,7 +17,7 @@
                     <span class="errors">{{ errors.first('password') }}</span><br>
                     <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
                 </form>
-                    <router-link to='/forgot'>forgot pw?</router-link>
+                    <router-link to='/forgot' class="bodyForgot">forgot pw?</router-link>
             </div>
         </div>
         <div class="footGrid">
@@ -55,7 +55,7 @@ export default {
                         password:this.password
                     })
                     .then(response =>{
-                        if(response.data.rs === 'usuarioLogeado'){
+                        if(response.data.rs === 'usuarioNoConfirmado'){
                             const toast = this.$swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -64,7 +64,18 @@ export default {
                                 });
                                 toast({
                                 type: 'success',
-                                title: 'Log In'
+                                title: 'User NOT Confirmed, check your email'
+                                })
+                        }else if(response.data.rs === 'usuarioLogeado'){
+                            const toast = this.$swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                                });
+                                toast({
+                                type: 'success',
+                                title: 'Logged In'
                                 })
                             localStorage.setItem('token',response.data.token);
                             this.$router.push('/dashboard');
@@ -153,6 +164,7 @@ export default {
           .bodyContainerInput                   {width:50vw; height: 3em; text-align: center; font-size: 1.1em; padding: 1em; margin-top: 1em; border: 1px solid #B1B1B1; border-radius: 20px;}
           .bodyContainerButton                  {height: 5em; text-align: center; margin-top: 1em; cursor: pointer;}
           .bodyContainerButtonSubmit            {border: none; cursor: pointer; background: url(../assets/images/login.svg);}
+          .bodyForgot                           {color: white;}
       .footGrid                                 {height: 5vh; display: grid; grid-area: footGrid;}
         .footContainer                          {height: 100%; display: grid; justify-items: center; align-items: center;}
           .footContainerTitle                   {color: #ffffff; font-size: 2em; font-family:dos;}          
