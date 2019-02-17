@@ -28,7 +28,6 @@
         </div>  
     </div>
 </template>
-
 <script>
 /* eslint-disable */
 import axios from "axios";
@@ -138,16 +137,14 @@ export default {
     }
 }
 </script>
-
 <style scoped>
 /* General */
     *                                           {margin: 0; padding: 0; font-size: 10px;}
     @font-face                                  {font-family: one; src: url('../assets/fonts/Oxygen-Bold.ttf');}
     @font-face                                  {font-family: two; src: url('../assets/fonts/Oxygen-Light.ttf');}
-    body                                        {background: url('../assets/images/bg.svg') no-repeat 50% 50% fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;}
     .errors                                     {font-size: 2em; color: #cfcfcf;}
 /* Layout */
-    .grid                                       {height: 100vh; display: grid; grid-template-areas: "headerGrid" "bodyGrid" "footGrid"; } 
+    .grid                                       {height: 100vh; background: url('../assets/images/bg.svg') no-repeat center center fixed; background-size: cover; display: grid; grid-template-areas: "headerGrid" "bodyGrid" "footGrid"; } 
       .headerGrid                               {height: 15vh; display: grid; grid-area: headerGrid;}
         .headerContainer                        {height: 100%; display: grid; justify-items: center; align-items: center;}
           .headerContainerTitle                 {color: #ffffff; font-size: 4.5em; font-family: one;}

@@ -57,7 +57,6 @@ const router = express.Router();
                             // 2. Se encripta el password recibido
                             bcrypt.hash(req.body.password, 10, (error, passwordCifrado) => {
                                 if (error){return res.status(500).json({rs:'errorEncriptacion'})
-                                // *-* Revisar si funcion con else o else if
                                 }if(passwordCifrado){
                                     // 3. Agregar datos en mongo
                                     const usuario = new Usuarios();
@@ -66,19 +65,12 @@ const router = express.Router();
                                     usuario.password = passwordCifrado;
                                     usuario.confirmedAccount = false;
                                     // Validacion de insercion de imagen
-                                    // if (usuario.fotoPerfil === null){
-                                    //     usuario.fotoPerfil = 'upload\\default.jpg';
-                                    // }else if (usuario.fotoPerfil === undefined){
-                                    //     usuario.fotoPerfil = 'upload\\default.jpg';
-                                    // }else{
-                                        usuario.fotoPerfil = req.file.path;
-                                    // }                                    
+                                    if (!req.file){usuario.fotoPerfil = 'upload\\default.jpg';}else{usuario.fotoPerfil = req.file.path;}
                                     usuario.save(function (error) {
                                         if(error){res.json({error:'error'})
                                         }else{
                                             // var newObject = this.user;
                                             // newObject.
-                        
                                             // *-* Se debe eliminar el password del objeto que se va a devolver
                                             // var obj = this.usuario();
                                             // delete obj.password

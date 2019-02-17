@@ -23,7 +23,6 @@
         </div>
     </div>
 </template>
-
 <script>
 /* eslint-disable */
 import axios from 'axios';
@@ -73,7 +72,6 @@ export default {
         }
 }
 </script>
-
 <style scoped>
 *                            {margin: 0; padding: 0;}
 .grid                           {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}

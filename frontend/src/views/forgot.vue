@@ -22,7 +22,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import axios from 'axios';
 export default {
@@ -51,14 +50,13 @@ export default {
     }
 }
 </script>
-
 <style scoped>
 *                            {margin: 0; padding: 0;}
-.grid                           {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
-    .headGrid                       {height: 40vh; background: rgb(255, 0, 0); display: grid; grid-area: headGrid;}
-        .headContainer                  {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
-    .bodyGrid                       {height: 55vh; background: rgba(0, 255, 255, 0.432); display: grid; grid-area: bodyGrid;}
-        .bodyContainer                  {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
-    .footGrid                       {height: 5vh; background: rgba(0, 0, 255, 0.363); display: grid; grid-area: footGrid;}
-        .footContainer                  {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+.grid                        {height: 100vh; background: url('../assets/images/bg.svg') no-repeat center center fixed; background-size: cover;  display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
+    .headGrid                {height: 40vh; background: rgb(255, 0, 0); display: grid; grid-area: headGrid;}
+        .headContainer       {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+    .bodyGrid                {height: 55vh; background: rgba(0, 255, 255, 0.432); display: grid; grid-area: bodyGrid;}
+        .bodyContainer       {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+    .footGrid                {height: 5vh; background: rgba(0, 0, 255, 0.363); display: grid; grid-area: footGrid;}
+        .footContainer       {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
 </style>

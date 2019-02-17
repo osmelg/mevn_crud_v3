@@ -79,12 +79,11 @@ export default {
 </script>
 <style scoped>
 /* General */
-    *                                           {margin: 0; padding: 0; font-size: 10px;}
-    @font-face                                  {font-family: uno; src: url('../assets/fonts/Oxygen-Bold.ttf');}
-    @font-face                                  {font-family: dos; src: url('../assets/fonts/Oxygen-Light.ttf');}
-    body                                        {background: url('../assets/images/bg.svg') no-repeat 50% 50% fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;}
+    *                                               {margin: 0; padding: 0; font-size: 10px;}
+    @font-face                                      {font-family: uno; src: url('../assets/fonts/Oxygen-Bold.ttf');}
+    @font-face                                      {font-family: dos; src: url('../assets/fonts/Oxygen-Light.ttf');}
 /* Layout */
-    .grid                                           {height: 100vh; display: grid; grid-template-areas: "headerGrid" "bodyGrid";}
+    .grid                                           {height: 100vh; background: url('../assets/images/bg.svg') no-repeat center center fixed; background-size: cover;  display: grid; grid-template-areas: "headerGrid" "bodyGrid";}
         .headerGrid                                 {height: 17vh; display: grid; grid-area: headerGrid;}
             .headerContainer                        {display: grid; align-items: start;}
                 .headerNav                          {width: 100%; display: grid; grid-template-columns: 20% 60% 20%;}
