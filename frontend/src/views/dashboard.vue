@@ -52,7 +52,7 @@ export default {
   *                                           {margin: 0; padding: 0; font-size: 10px;}
   @font-face                                  {font-family: uno; src: url('../assets/fonts/Oxygen-Bold.ttf');}
   @font-face                                  {font-family: dos; src: url('../assets/fonts/Oxygen-Light.ttf');}
-/* Layout */
+/* Layouts */
   @media screen and (max-width: 767px)
     {
       .headerNavCenterTitle                   {display: none;}
