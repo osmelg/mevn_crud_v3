@@ -22,7 +22,7 @@ Vue.config.productionTip = false
         },
         password: {
           required:'Type a password',
-          min_value:'Password min 2 digits'
+          alpha_num:'Password min 2 digits'
         }
       }    
     }
