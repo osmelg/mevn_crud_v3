@@ -7,8 +7,8 @@
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">                    
-                <router-link to='/dashboard/crearcomentario' class="headContainerLinks">Login</router-link>
-                <router-link to='/dashboard/crearcomentario' class="headContainerLinks">SignUp</router-link>  
+                <router-link to='/login' class="headContainerLinks">Login</router-link>
+                <router-link to='/signup' class="headContainerLinks">SignUp</router-link>  
             </div>
         </div>
         <div class="footGrid">

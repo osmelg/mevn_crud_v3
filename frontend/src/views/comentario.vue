@@ -17,16 +17,16 @@
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">
-            <div class="bodyMainPosts">
-                <div class="bodyContainerPost">
-                    <form v-on:submit.prevent="putComentario">
-                        <input type="text" v-model="comentario.titulo" placeholder="titulo" class="bodyContainerPostTitle"><br>
-                        <input type="text" v-model="comentario.comentario" placeholder="comentario" class="bodyContainerPostContent"><br>
-                        <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/update.svg" class="bodyContainerButton"></button>
-                        <button class="bodyContainerButtonSubmit" v-on:click.prevent="deletecomentario(comentario._id)"><img type='submit' src="../assets/images/delete.svg" class="bodyContainerButton"></button>
-                    </form>
-                </div>                             
-            </div>
+              <div class="bodyMainPosts">
+                  <div class="bodyContainerPost">
+                      <form v-on:submit.prevent="putComentario">
+                          <input type="text" v-model="comentario.titulo" placeholder="titulo" class="bodyContainerPostTitle"><br>
+                          <input type="text" v-model="comentario.comentario" placeholder="comentario" class="bodyContainerPostContent"><br>
+                          <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/update.svg" class="bodyContainerButton"></button>
+                          <button class="bodyContainerButtonSubmit" v-on:click.prevent="deletecomentario(comentario._id)"><img type='submit' src="../assets/images/delete.svg" class="bodyContainerButton"></button>
+                      </form>
+                  </div>                             
+              </div>
             </div>
         </div>
     </div>

@@ -236,7 +236,7 @@ const router = express.Router();
             })
             .exec(function(error,usuario){
                 if(error){
-                    res.json({rs:'UsuariosError'});
+                    res.json({rs:'usuarioError'});
                 }
                 else{
                     res.json(usuario);
@@ -244,40 +244,40 @@ const router = express.Router();
             })
         })  
 // COPIA DE ACCESO
-router.post('/login',(req,res)=>{
-    // 0. Verificar datos del cliente
-    // 1. Verificar si usuario existe
-    Usuarios.find({email:req.body.email})
-    .then(usuario =>{
-        if (usuario.length < 1){
-            return res.status(401).json({rs:'emailIncorrecto'})
-        }
-        // 2. Comparar contraseña con respecto a mongo
-        bcrypt.compare(req.body.password,usuario[0].password,(err,usuarioEncontrado)=>{
-            if (err){return res.status(401).json({rs: 'errorIncriptacion'})
-            }
-            if (usuarioEncontrado){
-                // 3. Creacion de token retornando datos del usuario (si es necesario)
-                const token = jwt.sign(
-                    {
-                        userId: usuario[0]._id,
-                        email: usuario[0].email
-                    },
-                    process.env.JWT_KEY,
-                    {
-                        expiresIn: "48h"
-                    }
-                );
-                return res.json({
-                    rs: "usuarioLogeado",
-                    token: token
-                });
-            }
-            return res.status(401).json({
-                rs:'passwordIncorrecto'
-            })
-        })
-    })
-})
+// router.post('/login',(req,res)=>{
+//     // 0. Verificar datos del cliente
+//     // 1. Verificar si usuario existe
+//     Usuarios.find({email:req.body.email})
+//     .then(usuario =>{
+//         if (usuario.length < 1){
+//             return res.status(401).json({rs:'emailIncorrecto'})
+//         }
+//         // 2. Comparar contraseña con respecto a mongo
+//         bcrypt.compare(req.body.password,usuario[0].password,(err,usuarioEncontrado)=>{
+//             if (err){return res.status(401).json({rs: 'errorIncriptacion'})
+//             }
+//             if (usuarioEncontrado){
+//                 // 3. Creacion de token retornando datos del usuario (si es necesario)
+//                 const token = jwt.sign(
+//                     {
+//                         userId: usuario[0]._id,
+//                         email: usuario[0].email
+//                     },
+//                     process.env.JWT_KEY,
+//                     {
+//                         expiresIn: "48h"
+//                     }
+//                 );
+//                 return res.json({
+//                     rs: "usuarioLogeado",
+//                     token: token
+//                 });
+//             }
+//             return res.status(401).json({
+//                 rs:'passwordIncorrecto'
+//             })
+//         })
+//     })
+// })
 // Exportar rutas
     module.exports = router;  

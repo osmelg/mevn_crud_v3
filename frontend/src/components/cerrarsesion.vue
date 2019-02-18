@@ -30,6 +30,6 @@ export default {
 </script>
 
 <style>
-.bodyContainerButtonSubmit                  {border: none; cursor: pointer; background: url(../assets/images/login.svg);}
+.bodyContainerButtonSubmit                  {border: none; background: url(../assets/images/login.svg);}
 .bodyContainerButton                        {height: 5em; width: 5em; text-align: center; margin-top: 1em; cursor: pointer;}
 </style>
