@@ -69,16 +69,16 @@ const router = express.Router();
                                     usuario.save(function (error) {
                                         if(error){res.json({error:'error'})
                                         }else{
-                                            // var newObject = this.user;
-                                            // newObject.
-                                            // *-* Se debe eliminar el password del objeto que se va a devolver
-                                            // var obj = this.usuario();
-                                            // delete obj.password
+                                            // En este paso se debe eliminar propiedad password del objeto usuario
+                                            // opcion 1
+                                            usuario.password = undefined;
+                                            usuario = JSON.parse(JSON.stringify(usuario));
+                                            // opcion 2
+                                            // delete usuario['password'];
                                             // 4. Creacion y almacenamiento de token en mongo
                                             jwt.sign({ email: usuario.email }, 'secret', (err, token) => {
                                                 usuario.confirmToken = token;
                                                 usuario.save();
-                                                // *-* se puede separar transporter de aqui?
                                                 // 5. Envio de token de confirmacion mediante email
                                                 var transporter = nodemailer.createTransport({
                                                     service: process.env.SERVICE,
@@ -124,7 +124,7 @@ const router = express.Router();
                     if(error){
                         res.json(error)
                     }else{
-                        // 3. Creacion de token de sesion, agregando al token email de usuario
+                        // 3. Creacion de token para sesion, agregando al token email de usuario (opcional)
                         const token = jwt.sign(
                             {
                                 email: usuario.email
@@ -184,12 +184,12 @@ const router = express.Router();
             router.get('/reset/:token',checkForgot,(req,res)=>{
                 // 1. Recibir token
                 const resetToken = req.params.token;
-                // 2. Buscar token en mongo
+                // 2. Buscar token recibido en la base de datos
                 Usuarios.findOne({resetToken:resetToken})
                         .exec()
                         .then(usuario=>{
                             const usuarioId = usuario._id;
-                            // *-* VERIFICAR el TOSTRING
+                            // *-* VERIFICAR el TOSTRING, se puede eliminar ?
                             const theid = usuarioId.toString();
                             res.json({rs:theid})
                         })
@@ -243,41 +243,5 @@ const router = express.Router();
                 }
             })
         })  
-// COPIA DE ACCESO
-// router.post('/login',(req,res)=>{
-//     // 0. Verificar datos del cliente
-//     // 1. Verificar si usuario existe
-//     Usuarios.find({email:req.body.email})
-//     .then(usuario =>{
-//         if (usuario.length < 1){
-//             return res.status(401).json({rs:'emailIncorrecto'})
-//         }
-//         // 2. Comparar contraseña con respecto a mongo
-//         bcrypt.compare(req.body.password,usuario[0].password,(err,usuarioEncontrado)=>{
-//             if (err){return res.status(401).json({rs: 'errorIncriptacion'})
-//             }
-//             if (usuarioEncontrado){
-//                 // 3. Creacion de token retornando datos del usuario (si es necesario)
-//                 const token = jwt.sign(
-//                     {
-//                         userId: usuario[0]._id,
-//                         email: usuario[0].email
-//                     },
-//                     process.env.JWT_KEY,
-//                     {
-//                         expiresIn: "48h"
-//                     }
-//                 );
-//                 return res.json({
-//                     rs: "usuarioLogeado",
-//                     token: token
-//                 });
-//             }
-//             return res.status(401).json({
-//                 rs:'passwordIncorrecto'
-//             })
-//         })
-//     })
-// })
 // Exportar rutas
     module.exports = router;  
