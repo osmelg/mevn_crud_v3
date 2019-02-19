@@ -12,8 +12,8 @@
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">      
-                <img src="images/image_profile.jpeg" class="bodyContainerImage" alt="userProfile" v-model="usuario.fotoPerfil">
-                <span class="bodyContainerName" v-model="usuario.nombre">Osmel Guarepo</span>
+                <img :src="usuario.fotoPerfil" class="bodyContainerImage" alt="userProfile">
+                <span class="bodyContainerName">{{usuario.nombre}}</span>
             </div>
         </div>
     </div>
@@ -57,7 +57,7 @@ export default {
         .headGrid                           {height: 10vh; display: grid; grid-area: headGrid;}
             .headContainer                  {height: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: center;}
                 .headContainerLeft          {margin-left: 1em; display: grid; justify-self: start;}
-                    .headContainerLeftItem  {height: 3em; width: 6em; border-radius: 2em; background: #fff; display: flex; align-items: center; justify-content: center;}
+                    .headContainerLeftItem  {height: 3em; width: 6em; border-radius: 2em; background: #fff; border: none; display: flex; align-items: center; justify-content: center;}
                 .headContainerRight         {margin-right: 1em; display: grid; justify-self: end;}
                     .headContainerRightItem {height: 3em; width: 6em; border-radius: 2em; background: #fff; display: flex; align-items: center; justify-content: center;}
         .bodyGrid                           {height: 90vh; display: grid; grid-area: bodyGrid;}
