@@ -46,6 +46,7 @@ export default {
 <style>
     .bodyMainPosts                              {height: 100%; width: 100%; max-width: 768px; display: grid; justify-items: center; align-items: start;}
         .bodyContainerPost                      {width: 95%;  color: white; border-radius: 1em; margin-top: 1em; margin-bottom: 1em; padding-top: 1em; padding-bottom: 1em; display: grid; justify-items: center; align-items: center;}
+        .bodyContainerPost:hover                {transform: scale(1.01); box-shadow: 0 25px 55px rgba(0,0,0,.2),0 16px 28px rgba(0,0,0,.24);}
         .bodyContainerPostTitle                 {font-size: 3.5em; width: 90%; border: none; background: #ebebeb2c; color: #fff; font-family: uno; text-align: center; }
         .bodyContainerPostContent               {font-size: 2.5em; width: 90%; border: none; background: #ebebeb2c; color: #fff; font-family: dos; margin-top: .5em; text-align: justify;}
         .bodyContainerPostButton                {height: 4em; width: 4em; margin-top: 1em; margin-right: 1em; cursor: pointer;}
