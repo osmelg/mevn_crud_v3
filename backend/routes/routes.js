@@ -325,5 +325,16 @@ const router = express.Router();
     router.all('*', function (req, res) {
         res.redirect("/");
     })
+    app.use(expressValidator());
+    app.post('/',(req,res)=>{
+        req.check('nombre','El nombre no puede estar vacio').notEmpty();
+        req.check('apellido','El apellido no puede estar vacio o faltan caracteres..').notEmpty().isLength({min:3});
+        var errors = req.validationErrors();
+        if (errors){
+            res.status(402).json({rs:errors[0].msg})
+        }else{
+            res.json({response:'pass'});
+        }
+    })    
     // Exportar rutas
         module.exports = router;         
