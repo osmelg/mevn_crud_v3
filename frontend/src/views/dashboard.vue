@@ -4,11 +4,11 @@
       <div class="headerContainer">
         <div class="headerNav">
             <div class="headerNavLeft">
-              <p class="headerNavTitle">Welcome: {{nombreUsuario}}</p>
+              <!-- <p class="headerNavTitle">Welcome: {{nombreUsuario}}</p> -->
+              <router-link to='/profile'><img type='submit' src="../assets/icons/profile.svg" class="bodyContainerButton"></router-link>
             </div>
             <div class="headerNavCenter">
                 <p class="headerNavCenterTitle">Mevn Super Crud</p>
-                <p class="headerNavCenterSubTitle">Create Post</p>
                 <router-link to='/dashboard/crearcomentario'><img type='submit' src="../assets/images/create.svg" class="bodyContainerButton"></router-link>
             </div>
             <div class="headerNavRight">
@@ -53,11 +53,6 @@ export default {
   @font-face                                  {font-family: uno; src: url('../assets/fonts/Oxygen-Bold.ttf');}
   @font-face                                  {font-family: dos; src: url('../assets/fonts/Oxygen-Light.ttf');}
 /* Layouts */
-  @media screen and (max-width: 767px)
-    {
-      .headerNavCenterTitle                   {display: none;}
-      .headerNavCenterSubTitle                {display: none;}
-    }
   .grid                                       {height: 100vh; background: url('../assets/images/bg.svg') no-repeat center center fixed; background-size: cover;  display: grid; grid-template-areas: "headerGrid" "bodyGrid";} 
     .headerGrid                               {height: 36vh; display: grid; grid-area: headerGrid; border-bottom: 1px solid grey;}
       .headerContainer                        {height: 10%; display: grid; align-items: start; justify-items: center;}
@@ -70,4 +65,10 @@ export default {
         .headerNavRight                       {height: 100%; display: grid; align-items: center; justify-items: end;}
     .bodyGrid                                 {height: 73vh; display: grid; grid-area: bodyGrid;}
         .bodyContainer                        {height: 100%; margin-top: 1em;  text-align: center; display: flex; justify-content: flex-start; align-items: center; flex-direction: column;}
+        .bodyContainerButton                  {height: 5em; width: 5em; text-align: center; margin-top: 1em; cursor: pointer;}
+  @media screen and (max-width: 767px)
+    {
+      .headerNavCenterTitle                   {display: none;}
+      .headerNavCenterSubTitle                {display: none;}
+    }
 </style>

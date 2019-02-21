@@ -12,39 +12,46 @@ const router = express.Router();
     // ACCESO 
         router.post('/login',checkAccount,(req,res)=>{
             // 0. Verificar datos del cliente
-            // 1. Verificar si usuario existe
-            Usuarios.find({email:req.body.email})
-            .then(usuario =>{
-                if (usuario.length < 1){
-                    return res.status(401).json({rs:'emailIncorrecto'})
-                }
-                // 2. Comparar contraseña con respecto a mongo
-                bcrypt.compare(req.body.password,usuario[0].password,(err,usuarioEncontrado)=>{
-                    if (err){return res.status(401).json({rs: 'errorIncriptacion'})
+            req.check('email','emailError').notEmpty().isEmail();
+            req.check('password','passwordError').notEmpty().isLength({min:3});
+            var errors = req.validationErrors();
+            if (errors){
+                res.status(402).json({rs:errors[0].msg})
+            }else{
+                // 1. Verificar si usuario existe
+                Usuarios.find({email:req.body.email})
+                .then(usuario =>{
+                    if (usuario.length < 1){
+                        return res.status(401).json({rs:'emailIncorrecto'})
                     }
-                    if (usuarioEncontrado){
-                        // 3. Creacion de token retornando datos del usuario (si es necesario)
-                        const token = jwt.sign(
-                            {
-                                userId: usuario[0]._id,
-                                email: usuario[0].email
-                            },
-                            process.env.JWT_KEY,
-                            {
-                                expiresIn: "48h"
-                            }
-                        );
-                        return res.json({
-                            rs: "usuarioLogeado",
-                            token: token
-                        });
-                    }
-                    return res.status(401).json({
-                        rs:'passwordIncorrecto'
+                    // 2. Comparar contraseña con respecto a mongo
+                    bcrypt.compare(req.body.password,usuario[0].password,(err,usuarioEncontrado)=>{
+                        if (err){return res.status(401).json({rs: 'errorIncriptacion'})
+                        }
+                        if (usuarioEncontrado){
+                            // 3. Creacion de token retornando datos del usuario (si es necesario)
+                            const token = jwt.sign(
+                                {
+                                    userId: usuario[0]._id,
+                                    email: usuario[0].email
+                                },
+                                process.env.JWT_KEY,
+                                {
+                                    expiresIn: "48h"
+                                }
+                            );
+                            return res.json({
+                                rs: "usuarioLogeado",
+                                token: token
+                            });
+                        }
+                        return res.status(401).json({
+                            rs:'passwordIncorrecto'
+                        })
                     })
                 })
-            })
-        })
+            }
+        })  
     // REGISTRO
         // Creacion de cuenta
             router.post('/signup',multerConfig.upload.single('fotoPerfil'),(req,res)=>{
@@ -59,7 +66,7 @@ const router = express.Router();
                                 if (error){return res.status(500).json({rs:'errorEncriptacion'})
                                 }if(passwordCifrado){
                                     // 3. Agregar datos en mongo
-                                    const usuario = new Usuarios();
+                                    var usuario = new Usuarios();
                                     usuario.nombre = req.body.nombre;
                                     usuario.email = req.body.email;
                                     usuario.password = passwordCifrado;
@@ -70,11 +77,7 @@ const router = express.Router();
                                         if(error){res.json({error:'error'})
                                         }else{
                                             // En este paso se debe eliminar propiedad password del objeto usuario
-                                            // opcion 1
-                                            usuario.password = undefined;
-                                            usuario = JSON.parse(JSON.stringify(usuario));
-                                            // opcion 2
-                                            // delete usuario['password'];
+                                            //  pero no je  *-*
                                             // 4. Creacion y almacenamiento de token en mongo
                                             jwt.sign({ email: usuario.email }, 'secret', (err, token) => {
                                                 usuario.confirmToken = token;
@@ -181,21 +184,20 @@ const router = express.Router();
         })
     // Reiniciar contraseña
         // GET
-            router.get('/reset/:token',checkForgot,(req,res)=>{
+            router.get('/reset/:token', checkForgot, (req, res) => {
                 // 1. Recibir token
                 const resetToken = req.params.token;
                 // 2. Buscar token recibido en la base de datos
-                Usuarios.findOne({resetToken:resetToken})
-                        .exec()
-                        .then(usuario=>{
-                            const usuarioId = usuario._id;
-                            // *-* VERIFICAR el TOSTRING, se puede eliminar ?
-                            const theid = usuarioId.toString();
-                            res.json({rs:theid})
-                        })
-                        .catch(error =>{
-                            console.log(error);
-                        })
+                Usuarios.findOne({ resetToken: resetToken })
+                    .exec()
+                    .then(usuario => {
+                        const usuarioId = usuario._id;
+                        const theid = usuarioId;
+                        res.json({ rs: theid })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
             }) 
         // POST 
             router.post('/reset',(req,res) =>{
@@ -242,6 +244,6 @@ const router = express.Router();
                     res.json(usuario);
                 }
             })
-        })  
+        }) 
 // Exportar rutas
     module.exports = router;  

@@ -9,6 +9,7 @@ import signup from './views/signup.vue'
 import forgot from './views/forgot.vue'
 import reset from './views/reset.vue'
 import confirm from './views/confirm.vue'
+import profile from './views/profile.vue'
 
 Vue.use(Router)
 
@@ -24,7 +25,8 @@ let router = new Router({
     {path: '/signup',name: 'signup',component: signup},
     {path: '/forgot',name: 'forgot',component: forgot},
     {path: '/reset/:token',name: 'reset',component: reset},
-    {path: '/confirm/:token',name: 'confirm',component: confirm}
+    {path: '/confirm/:token',name: 'confirm',component: confirm},
+    {path: '/profile',name: 'profile',component: profile,meta:{requiresAuth:true}}
   ]
 })
 router.beforeEach((to, from, next) => {

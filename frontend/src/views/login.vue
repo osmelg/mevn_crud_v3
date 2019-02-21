@@ -114,6 +114,28 @@ export default {
                             type: 'error',
                             title: 'Password Incorrect'
                             })
+                        }else if (error.response.data.rs === 'emailError'){
+                            const toast = this.$swal.mixin({
+                            toast: true,
+                            position: 'top',
+                            showConfirmButton: false,
+                            timer: 3000
+                            });
+                            toast({
+                            type: 'error',
+                            title: 'Verify Email input'
+                            })
+                        }else if (error.response.data.rs === 'passwordError'){
+                            const toast = this.$swal.mixin({
+                            toast: true,
+                            position: 'top',
+                            showConfirmButton: false,
+                            timer: 3000
+                            });
+                            toast({
+                            type: 'error',
+                            title: 'Verify Password input'
+                            })
                         }else{
                             const toast = this.$swal.mixin({
                             toast: true,

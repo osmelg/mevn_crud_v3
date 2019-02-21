@@ -4,7 +4,6 @@ module.exports = (req, res, next) => {
     Usuarios.find({ email: req.body.email })
         .then(usuario => {
             if (usuario[0].confirmedAccount === true) {
-                // res.status(200).json({ rs: 'usuarioConfirmado' });
                 next();
             } else {
                 res.json({ rs: 'usuarioNoConfirmado' });

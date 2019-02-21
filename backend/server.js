@@ -4,6 +4,7 @@
     const mongoose = require('mongoose');
     const userRoutes = require('./routes/user.js');
     const blogRoutes = require('./routes/blog.js');
+    const expressValidator = require('express-validator');
 // Inicializamos express
     const express = require('express');
     var app = express();
@@ -14,6 +15,7 @@
 // Middlewares
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
+    app.use(expressValidator());
     app.use(cors());
     app.use(userRoutes);
     app.use(blogRoutes);

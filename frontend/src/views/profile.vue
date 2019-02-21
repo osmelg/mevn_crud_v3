@@ -65,7 +65,7 @@ export default {
                 .bodyContainerImage         {height: 25em; width: 25em; object-fit: cover; border-radius: 50%; box-shadow: 0px 4px 4px #000000;}
                 .bodyContainerName          {font-size: 5em; color: #fff;}
     @media screen and (max-width: 768px){
-        .grid                               {height: 100vh; background: red; background: url('images/image_profile.jpeg') no-repeat center center fixed; background-size: cover; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
+        /* .grid                               {height: 100vh; background: red; background: url('images/image_profile.jpeg') no-repeat center center fixed; background-size: cover; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";} */
         .bodyContainerImage                 {display: none;}
     } 
 </style>
