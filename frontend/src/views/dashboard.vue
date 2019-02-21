@@ -4,12 +4,11 @@
       <div class="headerContainer">
         <div class="headerNav">
             <div class="headerNavLeft">
-              <!-- <p class="headerNavTitle">Welcome: {{nombreUsuario}}</p> -->
               <router-link to='/profile'><img type='submit' src="../assets/icons/profile.svg" class="bodyContainerButton"></router-link>
             </div>
             <div class="headerNavCenter">
                 <p class="headerNavCenterTitle">Mevn Super Crud</p>
-                <router-link to='/dashboard/crearcomentario'><img type='submit' src="../assets/images/create.svg" class="bodyContainerButton"></router-link>
+                <router-link to='/dashboard/crearcomentario'><img type='submit' src="../assets/icons/create.svg" class="bodyContainerButton"></router-link>
             </div>
             <div class="headerNavRight">
                 <cerrarSesion></cerrarSesion>

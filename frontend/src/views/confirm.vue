@@ -1,18 +1,14 @@
 <template>
     <div class="grid">
-        <div class="headGrid">
-            <div class="headContainer">
-                <p>Stand by, confirming your data...</p>
-            </div>
-        </div>
-        <div class="footGrid">
-            <div class="footContainer">
-                <a href="https://ogportfolio.herokuapp.com/">www.osmel.tk</a>
+        <div class="bodyGrid">
+            <div class="bodyContainer">   
+                <p class="bodyContainerTitle">Stand by, confirming your data..</p>
             </div>
         </div>
     </div>
 </template>
 <script>
+/* eslint-disable */
 import axios from 'axios';
 export default {
     data(){
@@ -40,10 +36,12 @@ export default {
 }
 </script>
 <style scoped>
-*                                   {margin: 0; padding: 0;}
-.grid                               {height: 100vh; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
-    .headGrid                       {height: 95vh; background: rgb(255, 0, 0); display: grid; grid-area: headGrid;}
-        .headContainer              {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
-    .footGrid                       {height: 5vh; background: rgba(0, 0, 255, 0.363); display: grid; grid-area: footGrid;}
-        .footContainer              {height: 100%; background: rgba(128, 255, 0, 0.144); display: flex; justify-content: center; align-items: center; flex-direction: column;}
+@font-face                           {font-family: titulo; src: url('../assets/fonts/Oxygen-Bold.ttf');}
+*                                    {margin: 0; padding: 0;}
+.grid                                {height: 100vh; background: #2C3131; display: grid; grid-template-areas: "bodyGrid";}
+    .bodyGrid                        {height: 100vh; display: grid; align-items: center; justify-items: center; grid-area: bodyGrid;}
+        .bodyContainer               {display: flex; flex-direction: column; align-items: center;}
+            .bodyContainerInput      {height: 1em; width: auto; padding: 1em; text-align: center; border: none; border-top-left-radius: 2em; border-bottom-left-radius: 2em;}
+            .bodyContainerButtonSubmit{height: 3em; width: 6em; background: #fff; border: none; border-top-right-radius: 2em; border-bottom-right-radius: 2em; cursor: pointer;}
+            .bodyContainerTitle      {font-size: 2.5em; color: #fff; font-family: titulo; margin-bottom: 1em;}
 </style>

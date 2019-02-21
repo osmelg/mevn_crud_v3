@@ -148,13 +148,11 @@ const router = express.Router();
                 const token = jwt.sign({},process.env.JWT_KEY,{expiresIn: "1h"});
             // 2. Buscar si existe el email
                 Usuarios.findOne({email:req.body.emailTo})
-                    .exec() // funciona igual sino se coloca ?
+                    .exec() 
                     .then(usuario => {
                         if (!usuario) {res.json({rs:'emailNoExiste'})}
                         usuario.resetToken = token;
                         usuario.save();
-                    // })
-                    // .then(result => {
                         // 3. Enviar token por email
                         var transporter = nodemailer.createTransport({
                             service: process.env.SERVICE,

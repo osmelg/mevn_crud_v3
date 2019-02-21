@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button type="submit" v-on:click.prevent="cerrarSesion" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/logout.svg" class="bodyContainerButton"></button>
+        <img src="../assets/icons/logout.svg" v-on:click.prevent="cerrarSesion" class="bodyContainerButton">
     </div>
 </template>
 <script>
@@ -28,6 +28,6 @@ export default {
 }
 </script>
 <style>
-.bodyContainerButtonSubmit                  {border: none; cursor: pointer; background: url(../assets/images/login.svg);}
-.bodyContainerButton                        {height: 5em; width: 5em; text-align: center; margin-top: 1em; cursor: pointer;}
+*                                           {margin: 0; padding: 0;}
+.bodyContainerButton                        {height: 3em; width: 3em; cursor: pointer; background: url(../assets/icons/login.svg);}
 </style>

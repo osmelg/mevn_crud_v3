@@ -14,7 +14,7 @@
                     <span class="errors">{{ errors.first('email') }}</span><br>
                     <input type="password" class="bodyContainerInput" v-model="password" placeholder="password" v-validate="'required|alpha_num:3'" name="password"><br>
                     <span class="errors">{{ errors.first('password') }}</span><br>
-                    <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/login.svg" class="bodyContainerButton"></button>
+                    <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/icons/login.svg" class="bodyContainerButton"></button>
                 </form>
                     <router-link to='/forgot' class="bodyForgot">forgot pw?</router-link>
             </div>
@@ -41,7 +41,7 @@ export default {
         features(){
             this.$swal.fire(
                 'Features',
-                'Html - Css - Vuejs - Veevalidate - Sweetalert2 - NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens',
+                'FRONT END (Html - Css - Vuejs - Veevalidate - Sweetalert2) BACKEND(NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens - express-validator)',
                 'info'
                 )
         },
@@ -183,7 +183,7 @@ export default {
           .bodyContainerTitle                   {color: #fff; font-size: 3.6em; font-family: two;}
           .bodyContainerInput                   {width:50vw; height: 3em; text-align: center; font-size: 1.1em; padding: 1em; margin-top: 1em; border: 1px solid #B1B1B1; border-radius: 20px;}
           .bodyContainerButton                  {height: 5em; text-align: center; margin-top: 1em; cursor: pointer;}
-          .bodyContainerButtonSubmit            {border: none; cursor: pointer; background: url(../assets/images/login.svg);}
+          .bodyContainerButtonSubmit            {border: none; cursor: pointer; background: url(../assets/icons/login.svg);}
           .bodyForgot                           {color: white;}
       .footGrid                                 {height: 5vh; display: grid; grid-area: footGrid;}
         .footContainer                          {height: 100%; display: grid; justify-items: center; align-items: center;}

@@ -24,7 +24,6 @@ export default {
 }
 </script>
 <style scoped>
-/* @font-face                  { src: url('../src/assets/fonts/AirAmerica-Regular.otf');} */
 *                                       {margin: 0; padding: 0;}
 .grid                                   {height: 100vh; background: url('../assets/images/hero.jpg') no-repeat center center fixed; background-size: cover; height: 100%; overflow: hidden; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
     .headGrid                           {height: 25vh; display: grid; grid-area: headGrid;}
@@ -33,7 +32,7 @@ export default {
     .bodyGrid                           {height: 70vh; display: grid; grid-area: bodyGrid;}
         .bodyContainer                  {max-height: 100%; display: flex; justify-content: center; align-items: center;}
             .bodyContainerImage         {height: 100%; width: 100%; object-fit: cover;}
-                .headContainerLinks     {margin-right: 2em; padding: .5em; color: #fff; border-radius: 2em; background: #da090c; font-family: 'Courier New', Courier, monospace;}
+                .headContainerLinks     {margin-right: 2em; text-decoration: none;  padding: .5em; color: #fff; border-radius: 2em; background: #da090c; font-family: 'Courier New', Courier, monospace;}
     .footGrid                           {height: 5vh; display: grid; grid-area: footGrid;}
         .footContainer                  {height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
             .footContainerTitle         {color: #000;}

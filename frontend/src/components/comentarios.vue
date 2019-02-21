@@ -4,7 +4,7 @@
         <div class="bodyContainerPost" v-for="comentario of comentarios" :key="comentario._id">
             <p class="bodyContainerPostTitle">{{comentario.titulo}}</p>
             <p class="bodyContainerPostContent">{{comentario.comentario}}</p>
-            <router-link :to="{name:'comentario',params:{id:comentario._id}}"><img type='submit' src="../assets/images/update.svg" class="bodyContainerButton"></router-link>
+            <router-link :to="{name:'comentario',params:{id:comentario._id}}"><img type='submit' src="../assets/icons/update.svg" class="bodyContainerButton"></router-link>
         </div>                             
     </div>
 </template>

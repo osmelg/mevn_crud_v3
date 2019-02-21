@@ -3,10 +3,10 @@
         <div class="headGrid">
             <div class="headContainer">
                 <div class="headContainerLeft">
-                    <router-link to='/dashboard' class="headContainerLeftItem">Go Back</router-link>
+                    <router-link to='/dashboard'><img src="../assets/icons/back.svg" class="headContainerLeftItem" alt=""></router-link>
                 </div>
                 <div class="headContainerRight">
-                    <router-link to='/dashboard' class="headContainerRightItem">Logout</router-link>
+                    <cerrarSesion></cerrarSesion>
                 </div>
             </div>
         </div>
@@ -22,6 +22,7 @@
 import axios from "axios";
 import cerrarsesion from '../components/cerrarsesion.vue';
 export default {
+    components:{'cerrarSesion':cerrarsesion},
     data(){
         return{
             usuario:{}
@@ -57,7 +58,7 @@ export default {
         .headGrid                           {height: 10vh; display: grid; grid-area: headGrid;}
             .headContainer                  {height: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: center;}
                 .headContainerLeft          {margin-left: 1em; display: grid; justify-self: start;}
-                    .headContainerLeftItem  {height: 3em; width: 6em; border-radius: 2em; background: #fff; border: none; display: flex; align-items: center; justify-content: center;}
+                    .headContainerLeftItem  {height: 3em; width: 3em; cursor: pointer;}
                 .headContainerRight         {margin-right: 1em; display: grid; justify-self: end;}
                     .headContainerRightItem {height: 3em; width: 6em; border-radius: 2em; background: #fff; display: flex; align-items: center; justify-content: center;}
         .bodyGrid                           {height: 90vh; display: grid; grid-area: bodyGrid;}

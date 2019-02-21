@@ -4,7 +4,7 @@
             <div class="headerContainer">
                 <div class="headerNav">
                     <div class="headerNavLeft">
-                        <router-link to='/dashboard'><img src="../assets/images/back.svg" class="headerNavLeftButton" alt=""></router-link>
+                        <router-link to='/dashboard'><img src="../assets/icons/back.svg" class="headerNavLeftButton" alt=""></router-link>
                     </div>
                     <div class="headerNavCenter">
                         <p class="headerNavCenterTitle">Create Post</p>
@@ -22,7 +22,7 @@
                     <form v-on:submit.prevent="postComentario">
                         <input type="text" v-model="titulo" placeholder="titulo" class="bodyContainerPostTitle"><br>
                         <input type="text" v-model="comentario" placeholder="comentario" class="bodyContainerPostContent"><br>
-                        <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/images/create.svg" class="bodyContainerButton"></button>
+                        <button type="submit" class="bodyContainerButtonSubmit"><img type='submit' src="../assets/icons/create.svg" class="bodyContainerButton"></button>
                     </form>
                 </div>                             
             </div>
