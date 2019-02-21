@@ -32,14 +32,8 @@ export default {
                     }
                 })
                  .catch(error =>{
-                    //  alert(error.response.status)
-                     console.log(JSON.stringify(error))
-                    // if (error.data.rs === 'usuarioConfirmError')
-                    // {
-                    //     alert('Error when trying to verify your data');
-                    // }else{
-                    //     alert(error);
-                    // }
+                    alert('Error, please try again');
+                    this.$router.push('/home');
                 })
             }
         }
