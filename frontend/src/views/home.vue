@@ -7,8 +7,9 @@
         </div>
         <div class="bodyGrid">
             <div class="bodyContainer">                    
-                <router-link to='/login' class="headContainerLinks">Login</router-link>
-                <router-link to='/signup' class="headContainerLinks">SignUp</router-link>  
+                <router-link to='/login' class="bodyContainerLinks">Login</router-link>
+                <button v-on:click="features" class="bodyContainerFeatures">Features</button>
+                <router-link to='/signup' class="bodyContainerLinks">SignUp</router-link>  
             </div>
         </div>
         <div class="footGrid">
@@ -20,7 +21,15 @@
 </template>
 <script>
 export default {
-
+    methods:{
+        features(){
+            this.$swal.fire(
+                'Features',
+                'FRONT END (Html - Css - Vuejs - vue router - axios - Veevalidate - Sweetalert2 - JsonWebTokens - localStorage) BACKEND(NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens - express-validator - nodemailer - dotenv - multer)',
+                'info'
+                )
+        }
+    }
 }
 </script>
 <style scoped>
@@ -32,7 +41,8 @@ export default {
     .bodyGrid                           {height: 70vh; display: grid; grid-area: bodyGrid;}
         .bodyContainer                  {max-height: 100%; display: flex; justify-content: center; align-items: center;}
             .bodyContainerImage         {height: 100%; width: 100%; object-fit: cover;}
-                .headContainerLinks     {margin-right: 2em; text-decoration: none;  padding: .5em; color: #fff; border-radius: 2em; background: #da090c; font-family: 'Courier New', Courier, monospace;}
+                .bodyContainerLinks     {text-decoration: none; padding: .5em; color: #fff; border-radius: 2em; background: #da090c; font-family: helvetica;}
+                .bodyContainerFeatures  {cursor: pointer; padding: 1em; color: #fff; border: none; margin-right: 1em; margin-left: 1em; border-radius: 2em; background: #da090c; font-family: helvetica;}
     .footGrid                           {height: 5vh; display: grid; grid-area: footGrid;}
         .footContainer                  {height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
             .footContainerTitle         {color: #000;}

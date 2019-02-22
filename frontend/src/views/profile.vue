@@ -11,8 +11,8 @@
             </div>
         </div>
         <div class="bodyGrid">
-            <div class="bodyContainer">      
-                <img :src="usuario.fotoPerfil" class="bodyContainerImage" alt="userProfile">
+            <div class="bodyContainer">
+                <img :src="'http://localhost:3000/'+usuario.fotoPerfil" class="bodyContainerImage">
                 <span class="bodyContainerName">{{usuario.nombre}}</span>
             </div>
         </div>
@@ -33,21 +33,21 @@ export default {
     },
     methods:{
         getPerfilUsuario(){
-        axios
-        .get('http://localhost:3000/profile/'+this.$route.params.id,{
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-            }) 
-        .then(response =>{
-            this.usuario = response.data;
-        })
-        .catch(error=>{
-            if(error.response.data.rs === 'getComentarioError'){
-            // this.usuarioError = 'usuarioError';
-            // esto deberia ser con sweetalert
-            }        
-        })
+            axios
+            .get('http://localhost:3000/profile/'+this.$route.params.id,{
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    },
+                }) 
+            .then(response =>{
+                this.usuario = response.data;
+            })
+            .catch(error=>{
+                if(error.response.data.rs === 'getComentarioError'){
+                // this.usuarioError = 'usuarioError';
+                // esto deberia ser con sweetalert
+                }        
+            })
         }        
     }
 }
@@ -65,8 +65,4 @@ export default {
             .bodyContainer                  {max-height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
                 .bodyContainerImage         {height: 25em; width: 25em; object-fit: cover; border-radius: 50%; box-shadow: 0px 4px 4px #000000;}
                 .bodyContainerName          {font-size: 5em; color: #fff;}
-    @media screen and (max-width: 768px){
-        /* .grid                               {height: 100vh; background: red; background: url('images/image_profile.jpeg') no-repeat center center fixed; background-size: cover; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";} */
-        .bodyContainerImage                 {display: none;}
-    } 
 </style>

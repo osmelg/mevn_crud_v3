@@ -1,6 +1,7 @@
 require('dotenv').config();
 const checkForgot = require('../middlewares/checkForgot');
 const checkAccount = require('../middlewares/checkAccount');
+const checkAuth = require('../middlewares/checkAuth');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuarios = require('../models/Usuarios.model');
@@ -9,7 +10,7 @@ const nodemailer = require('nodemailer');
 const express = require('express');
 const router = express.Router();
 // AUTENTICACION DE USUARIOS
-    // ACCESO 
+    // ACCESO
         router.post('/login',checkAccount,(req,res)=>{
             // 0. Verificar datos del cliente
             req.check('email','emailError').notEmpty().isEmail();
@@ -72,12 +73,10 @@ const router = express.Router();
                                     usuario.password = passwordCifrado;
                                     usuario.confirmedAccount = false;
                                     // Validacion de insercion de imagen
-                                    if (!req.file){usuario.fotoPerfil = 'upload\\default.jpg';}else{usuario.fotoPerfil = req.file.path;}
+                                    if (!req.file){usuario.fotoPerfil = 'upload/default.jpeg';}else{usuario.fotoPerfil = req.file.path;}
                                     usuario.save(function (error) {
                                         if(error){res.json({error:'error'})
                                         }else{
-                                            // En este paso se debe eliminar propiedad password del objeto usuario
-                                            //  pero no je  *-*
                                             // 4. Creacion y almacenamiento de token en mongo
                                             jwt.sign({ email: usuario.email }, 'secret', (err, token) => {
                                                 usuario.confirmToken = token;
@@ -130,6 +129,7 @@ const router = express.Router();
                         // 3. Creacion de token para sesion, agregando al token email de usuario (opcional)
                         const token = jwt.sign(
                             {
+                                userId: usuario._id,
                                 email: usuario.email
                             },
                             process.env.JWT_KEY,
@@ -229,7 +229,7 @@ const router = express.Router();
             })
 // Datos de Usuario
     // Obtener datos de usuario
-        router.get('/profile/:id',(req,res)=>{
+        router.get('/profile/:id',checkAuth,(req,res)=>{
             // 1. Buscar comentario
             Usuarios.findOne({
                 _id:req.params.id

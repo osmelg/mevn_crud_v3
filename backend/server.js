@@ -13,6 +13,8 @@
         console.log('servidor iniciado');
     })
 // Middlewares
+    // app.use(express.static('upload'));
+    app.use('/upload',express.static('upload'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
     app.use(expressValidator());

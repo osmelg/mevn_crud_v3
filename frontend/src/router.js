@@ -26,7 +26,7 @@ let router = new Router({
     {path: '/forgot',name: 'forgot',component: forgot},
     {path: '/reset/:token',name: 'reset',component: reset},
     {path: '/confirm/:token',name: 'confirm',component: confirm},
-    {path: '/profile',name: 'profile',component: profile,meta:{requiresAuth:true}}
+    {path: '/profile/:id',name: 'profile',component:profile,meta:{requiresAuth:true}}
   ]
 })
 router.beforeEach((to, from, next) => {

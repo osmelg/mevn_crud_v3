@@ -22,23 +22,23 @@ export default {
     },
     methods:{
         getComentarios(){
-        axios
-        .get('http://localhost:3000/dashboard',{
-                headers: {
-                    Authorization: 'Bearer '+ localStorage.getItem('token')
-                },
-            })     
-        .then(response =>{
-            this.comentarios = response.data;
-        })
-        .catch(error =>{
-            if(error.response.data.rs === 'tokenExpired'){
-            this.$router.push('/login');
-            localStorage.removeItem('token');
-            }else if (error.response.data.rs === 'getComentariosError'){
-            this.comentariosError = 'getComentariosError';
-            }
-        })
+            axios
+            .get('http://localhost:3000/dashboard',{
+                    headers: {
+                        Authorization: 'Bearer '+ localStorage.getItem('token')
+                    },
+                })     
+            .then(response =>{
+                this.comentarios = response.data;
+            })
+            .catch(error =>{
+                if(error.response.data.rs === 'tokenExpired'){
+                this.$router.push('/login');
+                localStorage.removeItem('token');
+                }else if (error.response.data.rs === 'getComentariosError'){
+                this.comentariosError = 'getComentariosError';
+                }
+            })
         }
     }
 }

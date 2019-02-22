@@ -4,7 +4,7 @@
       <div class="headerContainer">
         <div class="headerNav">
             <div class="headerNavLeft">
-              <router-link to='/profile'><img type='submit' src="../assets/icons/profile.svg" class="bodyContainerButton"></router-link>
+              <router-link :to="{name:'profile',params:{id:userId}}"><img type='submit' src="../assets/icons/profile.svg" class="bodyContainerButton"></router-link>
             </div>
             <div class="headerNavCenter">
                 <p class="headerNavCenterTitle">Mevn Super Crud</p>
@@ -36,13 +36,13 @@ export default {
   components:{'cerrarSesion':cerrarSesion,'comentarios':comentarios},
   data(){
     return{
-      nombreUsuario:''
+      userId:''
     }
   },
   created(){
     const token = localStorage.getItem('token');
     const descifrado = jwt.decode(token);
-    this.nombreUsuario = descifrado.email;
+    this.userId = descifrado.userId;
   }
 }
 </script>

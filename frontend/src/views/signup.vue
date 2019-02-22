@@ -3,7 +3,6 @@
         <div class="headerGrid">
             <div class="headerContainer">
                 <p class="headerContainerTitle">Mevn Super Crud</p>
-                <button class="headerContainerButton" v-on:click="features">Features</button>
             </div>
         </div>
         <div class="bodyGrid">
@@ -44,13 +43,6 @@ export default {
         }
     },
     methods:{
-        features(){
-            this.$swal.fire(
-                'Features',
-                'FRONT END (Html - Css - Vuejs - Veevalidate - Sweetalert2) BACKEND(NodeJs - ExpressJs - Mongoose - Mongodb - Bcrypt - JsonWebTokens - express-validator)',
-                'info'
-                )
-        },
         onFileSelected(event){
             this.fotoPerfil = event.target.files[0];
         },
