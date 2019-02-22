@@ -70,7 +70,7 @@ export default {
 <style scoped>
 @font-face                           {font-family: titulo; src: url('../assets/fonts/Oxygen-Bold.ttf');}
 *                                    {margin: 0; padding: 0;}
-.grid                                {height: 100vh; background: #2C3131; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
+.grid                                {height: 100vh; background: url('../assets/images/bg.svg') no-repeat center center fixed; background-size: cover; display: grid; grid-template-areas: "headGrid" "bodyGrid" "footGrid";}
     .headGrid                        {height: 10vh; display: grid; grid-area: headGrid;}
         .headContainer               {height: 100%; display: grid; grid-template-columns: 100%;}
             .headContainerLeft       {height: 100%; display: flex; justify-content: flex-start; align-items: center;}
